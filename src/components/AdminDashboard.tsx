@@ -3,7 +3,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSnapshot } from "@/hooks/useSnapshot";
-import { formatDateTimeJa, formatTime, statusLabel, todayISO } from "@/lib/format";
+import {
+  departureLabel,
+  formatDateTimeJa,
+  formatTime,
+  notificationTypeLabel,
+  statusLabel,
+  staySummary,
+  todayISO,
+} from "@/lib/format";
 import { playChime, playRingTick } from "@/lib/sound";
 import type { Appointment, CallRecord } from "@/lib/types";
 import { AppointmentForm, emptyForm } from "./AppointmentForm";
@@ -17,11 +25,22 @@ export function AdminDashboard() {
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const today = todayISO();
+  const facilityType = data?.settings.facilityType;
+  const leaveWord = departureLabel(facilityType);
   const todays = useMemo(
     () =>
       (data?.appointments ?? [])
-        .filter((a) => a.date === today)
-        .sort((a, b) => a.startTime.localeCompare(b.startTime)),
+        .filter((a) => {
+          if (a.date === today) return true;
+          return (
+            !a.departedAt &&
+            (a.status === "arrived" || a.status === "in-call" || a.status === "completed")
+          );
+        })
+        .sort((a, b) => {
+          if (a.date !== b.date) return a.date.localeCompare(b.date);
+          return a.startTime.localeCompare(b.startTime);
+        }),
     [data, today],
   );
 
@@ -70,6 +89,17 @@ export function AdminDashboard() {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
+    });
+    setBusyId(null);
+    await refresh();
+  }
+
+  async function markGone(apt: Appointment) {
+    setBusyId(apt.id);
+    await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ appointmentId: apt.id }),
     });
     setBusyId(null);
     await refresh();
@@ -139,7 +169,9 @@ export function AdminDashboard() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="font-serif text-3xl text-navy">本日の受付</h2>
-          <p className="mt-1 text-sm text-navy/60">自宅から来客の到着を確認し、必要ならその場でお話しください。</p>
+          <p className="mt-1 text-sm text-navy/60">
+            到着と{leaveWord}が届きます。滞在中の方とは、その場でお話しください。
+          </p>
         </div>
         <div className="flex gap-2">
           <button
@@ -167,7 +199,17 @@ export function AdminDashboard() {
               className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/40 bg-paper p-4"
             >
               <div>
-                <p className="text-xs text-gold">{n.type === "arrival" ? "到着" : "通話"}</p>
+                <p
+                  className={`text-xs ${
+                    n.type === "arrival"
+                      ? "text-[var(--arrive)]"
+                      : n.type === "departure"
+                        ? "text-navy"
+                        : "text-gold"
+                  }`}
+                >
+                  {notificationTypeLabel(n.type, facilityType)}
+                </p>
                 <p className="mt-1 font-medium text-navy">{n.message}</p>
                 <p className="text-xs text-navy/50">{formatDateTimeJa(n.createdAt)}</p>
               </div>
@@ -221,9 +263,15 @@ export function AdminDashboard() {
                   {apt.purpose}
                   {apt.hostName ? ` ／ 担当 ${apt.hostName}` : ""}
                 </p>
-                <p className="mt-1 text-xs text-navy/45">受付番号 {apt.visitCode}</p>
+                <p className="mt-1 text-xs text-navy/45">
+                  受付番号 {apt.visitCode}
+                  {apt.date !== today ? " ／ 前日からの滞在" : ""}
+                </p>
+                {staySummary(apt, facilityType) ? (
+                  <p className="mt-1 text-xs text-navy/55">{staySummary(apt, facilityType)}</p>
+                ) : null}
               </div>
-              <StatusPill status={apt.status} />
+              <StatusPill status={apt.status} facilityType={facilityType} />
               <div className="flex flex-wrap gap-2">
                 {(apt.status === "arrived" || apt.status === "scheduled" || apt.status === "in-call") && (
                   <button
@@ -235,7 +283,17 @@ export function AdminDashboard() {
                     お客様と話す
                   </button>
                 )}
-                {apt.status !== "completed" && apt.status !== "cancelled" && (
+                {(apt.status === "arrived" || apt.status === "in-call" || apt.status === "completed") && (
+                  <button
+                    type="button"
+                    disabled={busyId === apt.id}
+                    onClick={() => void markGone(apt)}
+                    className="rounded-full border border-[var(--line)] px-3 py-1.5 text-xs"
+                  >
+                    {leaveWord}にする
+                  </button>
+                )}
+                {apt.status !== "completed" && apt.status !== "cancelled" && apt.status !== "departed" && (
                   <button
                     type="button"
                     disabled={busyId === apt.id}
@@ -275,18 +333,19 @@ export function AdminDashboard() {
   );
 }
 
-function StatusPill({ status }: { status: string }) {
+function StatusPill({ status, facilityType }: { status: string; facilityType?: string }) {
   const tone: Record<string, string> = {
     scheduled: "bg-ivory text-navy",
     arrived: "bg-[var(--arrive)] text-white",
     "in-call": "bg-gold text-navy-deep",
+    departed: "bg-navy text-ivory",
     completed: "bg-navy/10 text-navy/60",
     cancelled: "bg-navy/10 text-navy/45",
     "no-show": "bg-navy/10 text-navy/45",
   };
   return (
     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${tone[status] ?? "bg-ivory"}`}>
-      {statusLabel(status)}
+      {statusLabel(status, facilityType)}
     </span>
   );
 }

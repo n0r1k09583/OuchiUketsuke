@@ -79,6 +79,7 @@ app.post("/api/appointments", async (req: Request, res: Response) => {
       status: "scheduled",
       notes: body.notes?.trim() ?? "",
       arrivedAt: null,
+      departedAt: null,
       createdAt: new Date().toISOString(),
     };
     store.appointments.push(item);
@@ -91,10 +92,58 @@ const STATUSES: AppointmentStatus[] = [
   "scheduled",
   "arrived",
   "in-call",
+  "departed",
   "completed",
   "cancelled",
   "no-show",
 ];
+
+const ON_SITE: AppointmentStatus[] = ["arrived", "in-call", "completed"];
+
+function departureWord(facilityType: FacilityType): string {
+  return facilityType === "office" ? "帰宅" : "チェックアウト";
+}
+
+function findByQuery(list: Appointment[], query: string): Appointment | undefined {
+  const digits = query.replace(/\D/g, "");
+  const nameKey = normalizeName(query);
+  if (digits.length === 4) {
+    const byCode = list.find((a) => a.visitCode === digits);
+    if (byCode) return byCode;
+  }
+  const named = list.filter((a) => {
+    const n = normalizeName(a.visitorName);
+    return n === nameKey || n.includes(nameKey) || nameKey.includes(n);
+  });
+  const today = todayISO();
+  named.sort((a, b) => {
+    if (a.date === today && b.date !== today) return -1;
+    if (b.date === today && a.date !== today) return 1;
+    return (b.arrivedAt ?? "").localeCompare(a.arrivedAt ?? "");
+  });
+  return named[0];
+}
+
+function applyDeparture(store: ReturnType<typeof getSnapshot>, apt: Appointment): Appointment {
+  if (apt.status === "departed") return apt;
+  apt.status = "departed";
+  apt.departedAt = apt.departedAt ?? new Date().toISOString();
+  for (const call of store.calls) {
+    if (call.appointmentId === apt.id && (call.status === "ringing" || call.status === "active")) {
+      call.status = "ended";
+      call.endedAt = new Date().toISOString();
+    }
+  }
+  const verb = departureWord(store.settings.facilityType);
+  pushNotification(store, {
+    type: "departure",
+    appointmentId: apt.id,
+    callId: null,
+    visitorName: apt.visitorName,
+    message: `${apt.visitorName} 様が${verb}されました（${apt.purpose}）`,
+  });
+  return apt;
+}
 
 app.patch("/api/appointments/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -111,7 +160,10 @@ app.patch("/api/appointments/:id", async (req: Request, res: Response) => {
     if (typeof body.endTime === "string") item.endTime = body.endTime;
     if (typeof body.visitCode === "string") item.visitCode = body.visitCode.trim();
     if (typeof body.notes === "string") item.notes = body.notes.trim();
-    if (body.status && STATUSES.includes(body.status)) item.status = body.status;
+    if (body.status && STATUSES.includes(body.status)) {
+      if (body.status === "departed") applyDeparture(store, item);
+      else item.status = body.status;
+    }
     return item;
   });
   if (!updated) {
@@ -142,12 +194,10 @@ app.post("/api/checkin", async (req: Request, res: Response) => {
     return;
   }
   const today = todayISO();
-  const digits = query.replace(/\D/g, "");
-  const nameKey = normalizeName(query);
   const result = await withStore((store) => {
-    const todays = store.appointments.filter(
-      (a) => a.date === today && a.status !== "cancelled",
-    );
+    const todays = store.appointments.filter((a) => a.date === today && a.status !== "cancelled");
+    const digits = query.replace(/\D/g, "");
+    const nameKey = normalizeName(query);
     let match: Appointment | undefined;
     if (digits.length === 4) match = todays.find((a) => a.visitCode === digits);
     if (!match) {
@@ -156,9 +206,17 @@ app.post("/api/checkin", async (req: Request, res: Response) => {
         return n === nameKey || n.includes(nameKey) || nameKey.includes(n);
       });
       match =
-        named.find((a) => a.status === "scheduled" || a.status === "arrived") ?? named[0];
+        named.find((a) => a.status === "scheduled" || a.status === "arrived" || a.status === "in-call") ??
+        named[0];
     }
-    if (!match || (match.status !== "scheduled" && match.status !== "arrived" && match.status !== "in-call")) {
+    if (!match) {
+      return { error: "本日のご予約が見つかりませんでした" as const, appointment: null };
+    }
+    if (match.status === "departed") {
+      const verb = departureWord(store.settings.facilityType);
+      return { error: `本日はすでに${verb}済みです` as const, appointment: null };
+    }
+    if (match.status !== "scheduled" && match.status !== "arrived" && match.status !== "in-call") {
       return { error: "本日のご予約が見つかりませんでした" as const, appointment: null };
     }
     if (match.status === "scheduled") {
@@ -172,6 +230,54 @@ app.post("/api/checkin", async (req: Request, res: Response) => {
         message: `${match.visitorName} 様が受付に到着されました（${match.purpose}）`,
       });
     }
+    return { error: null, appointment: match };
+  });
+  if (result.error) {
+    res.status(404).json({ error: result.error });
+    return;
+  }
+  res.json({ appointment: result.appointment });
+});
+
+app.post("/api/checkout", async (req: Request, res: Response) => {
+  const appointmentId = typeof req.body?.appointmentId === "string" ? req.body.appointmentId : "";
+  const query = String(req.body?.query ?? "").trim();
+  if (!appointmentId && !query) {
+    res.status(400).json({ error: "お名前または受付番号を入力してください" });
+    return;
+  }
+  const result = await withStore((store) => {
+    const verb = departureWord(store.settings.facilityType);
+    let match: Appointment | undefined;
+    if (appointmentId) {
+      match = store.appointments.find((a) => a.id === appointmentId);
+    } else {
+      const onSite = store.appointments.filter((a) => ON_SITE.includes(a.status));
+      match = findByQuery(onSite, query);
+      if (!match) {
+        const departed = findByQuery(
+          store.appointments.filter((a) => a.status === "departed"),
+          query,
+        );
+        if (departed) return { error: `すでに${verb}済みです` as const, appointment: null };
+        const scheduled = findByQuery(
+          store.appointments.filter((a) => a.status === "scheduled"),
+          query,
+        );
+        if (scheduled) {
+          return { error: `まだ到着していないため、${verb}できません` as const, appointment: null };
+        }
+        return { error: "ご予約が見つかりませんでした" as const, appointment: null };
+      }
+    }
+    if (!match) return { error: "ご予約が見つかりませんでした" as const, appointment: null };
+    if (match.status === "departed") {
+      return { error: `すでに${verb}済みです` as const, appointment: null };
+    }
+    if (!ON_SITE.includes(match.status)) {
+      return { error: `まだ到着していないため、${verb}できません` as const, appointment: null };
+    }
+    applyDeparture(store, match);
     return { error: null, appointment: match };
   });
   if (result.error) {
@@ -217,6 +323,7 @@ app.post("/api/calls", async (req: Request, res: Response) => {
         status: "in-call",
         notes: "予約なしの来訪",
         arrivedAt: new Date().toISOString(),
+        departedAt: null,
         createdAt: new Date().toISOString(),
       };
       store.appointments.push(walkIn);

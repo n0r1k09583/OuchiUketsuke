@@ -7,25 +7,29 @@ description: >-
 
 # おうち受付 — 学校提出（Skill・ファイル・非公開push）
 
-ユーザーが「スキルして」「コマンドプッシュして」「ファイルに保管して」と言ったら、次を行う。
+ユーザーが「スキルして」「コマンドプッシュして」「ファイルに保管して」「ファイルに上書き保存」と言ったら、次を行う。
 
 ## 絶対ルール
 
-- アプリは **まだ一般公開しない**。公開 URL は作らない。
-- GitHub は **private** のみ。`gh repo create` は `--private`。
-- AWS は無料枠の方針だけ残し、常時稼働サーバーは残さない。
-- 認証キー・`.env`・`store.json` はコミットしない。
+- アプリは **お問い合わせアプリ**（受付の人が使いやすい）。一般公開しない。
+- 前回スタック（Vite / Java Spring Boot Gradle / PostgreSQL）は使わない。
+- 証明資料は `docs/tech-selection.md`。
+- GitHub は **private** のみ。AWS 常時稼働は残さない。
+- `store.json` は Git に含めない。force push しない。git config は変えない。
 
-## ファイルに保管する場所
+## ファイルに保管する場所（上書き）
 
-| 内容 | パス |
-|------|------|
-| 要件定義書（提出用HTML） | `docs/要件定義書.html` |
-| 要件定義書（Markdown） | `docs/requirements.md` |
-| 基本設計書 | `docs/basic-design.md` |
-| 先生向けAWS | `docs/aws-for-teacher.md` |
-| 本Skill | `.cursor/skills/ouchi-uketsuke-school/SKILL.md` |
-| AWS Skill | `.cursor/skills/ouchi-uketsuke-aws/SKILL.md` |
+プロジェクト内を正とし、ユーザー側 Skill も同じ内容で上書きする。
+
+| 内容 | プロジェクト | ユーザー側 |
+|------|----------------|------------|
+| アプリ本体Skill | `.cursor/skills/ouchi-uketsuke/SKILL.md` | `~/.cursor/skills/ouchi-uketsuke/SKILL.md` |
+| 本Skill | `.cursor/skills/ouchi-uketsuke-school/SKILL.md` | `~/.cursor/skills/ouchi-uketsuke-school/SKILL.md` |
+| AWS Skill | `.cursor/skills/ouchi-uketsuke-aws/SKILL.md` | `~/.cursor/skills/ouchi-uketsuke-aws/SKILL.md` |
+| 要件定義書（提出用HTML） | `docs/要件定義書.html` | — |
+| 要件定義書（Markdown） | `docs/requirements.md` | — |
+| 基本設計書 | `docs/basic-design.md` | — |
+| 技術選定書 | `docs/tech-selection.md` | — |
 
 ## コマンド（push）
 
@@ -38,4 +42,4 @@ gh repo create OuchiUketsuke --private --source=. --remote=origin --push --descr
 
 すでに remote がある場合は `git push -u origin HEAD`。
 
-`main` / `master` へ force push しない。git config は変更しない。
+想定アカウント: `n0r1k09583`。リポジトリは private。公開（`--public`）にしない。

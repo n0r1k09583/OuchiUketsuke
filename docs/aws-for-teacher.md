@@ -1,7 +1,9 @@
 # 学校の先生へ — AWS と提出の見方
 
-本アプリ「おうち受付」は **スクール課題** です。  
+本アプリ「おうち受付」はスクール課題の **お問い合わせアプリ** です。ホテルや会社の受付の人が使いやすいよう作っています。  
 **まだ一般公開していません。** インターネット上の本番 URL はありません。
+
+前回課題（Vite / Java Spring Boot Gradle / PostgreSQL）とは **違う技術**（Next.js / Express / JSON / WebRTC）です。選定の証明は [tech-selection.md](./tech-selection.md) を見てください。
 
 ## AWS を使ったこと（無料枠・学校提出用）
 

@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 import type { Appointment, AppNotification, CallRecord, Snapshot, StoreData } from "./types";
-import { newId, randomVisitCode, todayISO } from "./format";
+import { newId, todayISO } from "./format";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const STORE_PATH = path.join(DATA_DIR, "store.json");
@@ -12,10 +12,11 @@ function seedAppointments(): Appointment[] {
   const dt = new Date(y, m - 1, d + 1);
   const tomorrow = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
 
-  const base = (partial: Omit<Appointment, "id" | "createdAt" | "arrivedAt">): Appointment => ({
+  const base = (partial: Omit<Appointment, "id" | "createdAt" | "arrivedAt" | "departedAt">): Appointment => ({
     ...partial,
     id: newId("apt"),
     arrivedAt: null,
+    departedAt: null,
     createdAt: new Date().toISOString(),
   });
 
@@ -76,7 +77,7 @@ function seedAppointments(): Appointment[] {
       date: tomorrow,
       startTime: "09:30",
       endTime: "10:00",
-      visitCode: randomVisitCode(),
+      visitCode: "9012",
       status: "scheduled",
       notes: "",
     }),
@@ -112,6 +113,11 @@ function readStore(): StoreData {
     if (!parsed.settings || !Array.isArray(parsed.appointments)) return defaultStore();
     parsed.calls ??= [];
     parsed.notifications ??= [];
+    parsed.appointments = parsed.appointments.map((a) => ({
+      ...a,
+      arrivedAt: a.arrivedAt ?? null,
+      departedAt: a.departedAt ?? null,
+    }));
     return parsed;
   } catch {
     const fresh = defaultStore();

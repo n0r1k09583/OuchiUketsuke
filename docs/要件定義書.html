@@ -58,11 +58,11 @@
   <div>
     <p class="school-head">課題提出用資料</p>
     <div class="cover-rule"></div>
-    <p style="text-align:center;margin:0;letter-spacing:.4em;font-size:12pt;">システム開発課題</p>
+    <p style="text-align:center;margin:0;letter-spacing:.4em;font-size:12pt;">システム開発課題　お問い合わせアプリ</p>
     <h1 style="margin-top:28px;font-size:28pt;letter-spacing:.12em;">要　件　定　義　書</h1>
     <div class="cover-rule thin"></div>
-    <p class="sysname">システム名称：<b>おうち受付</b>（リモート来客受付システム）</p>
-    <p style="text-align:center;font-size:11pt;color:var(--muted);">ホテル・企業の来客受付を自宅から行うWebアプリケーション</p>
+    <p class="sysname">システム名称：<b>おうち受付</b>（受付の人のためのお問い合わせアプリ）</p>
+    <p style="text-align:center;font-size:11pt;color:var(--muted);">ホテル・会社の受付担当が使いやすいWebアプリケーション<br>前回（Vite / Spring Boot / PostgreSQL）とは異なる技術スタック</p>
 
     <table style="margin-top:48px;">
       <tr><th style="width:28%">科目名</th><td><span class="blank"></span>（例：システム開発演習）</td></tr>
@@ -104,20 +104,23 @@
 
 <h2>1. はじめに</h2>
 <h3>1.1 本書の目的</h3>
-<p>本書は、課題制作システム「おうち受付」の要件を定義する。誰が・何を・どこまで使うかを文章と図表で示し、設計・実装・評価の共通の基準とする。</p>
+<p>本書は、課題制作の <b>お問い合わせアプリ</b>「おうち受付」の要件を定義する。ホテルや会社の受付の人が使いやすいことを第一とする。誰が・何を・どこまで使うかを文章と図表で示し、設計・実装・評価の共通の基準とする。</p>
 
 <h3>1.2 システム概要</h3>
-<p>「おうち受付」は、ホテルのフロントや会社の受付に置く来客用画面と、担当者が自宅で見る管理者画面を、1つのWebシステムでつなぐアプリケーションである。来客の予定を登録し、お客様が入口に着いたことを管理者へ知らせ、問い合わせがあればビデオ通話とチャットで直接話せる。</p>
+<p>お客様は入口の画面から到着やお問い合わせができる。受付担当は予定を管理し、着信に気づき、ビデオまたはチャットで直接応対する。現場にいなくても受付の仕事が続く。</p>
+<p>前回課題（React + TypeScript + Vite + Tailwind、Java + Spring Boot + Gradle + PostgreSQL）とは <b>異なる技術スタック</b>（Next.js、Express、JSON、WebRTC）を使う。AI を補助にしつつ選定と構築は自分で行い、特定技術に依存しない応用力を示す。詳細は技術選定書を参照。</p>
 
 <h3>1.3 用語定義</h3>
 <table>
   <tr><th style="width:22%">用語</th><th>定義</th></tr>
   <tr><td>施設</td><td>ホテルまたは会社など、来客を迎える場所。</td></tr>
   <tr><td>受付画面</td><td>入口・フロントのタブレット／PCで開く来客向け画面。</td></tr>
-  <tr><td>管理者</td><td>自宅など遠隔地から受付を担当する職員。</td></tr>
+  <tr><td>受付担当（管理者）</td><td>ホテル・会社の受付の人。予定・通知・問い合わせ応対の主役。</td></tr>
+  <tr><td>お問い合わせ</td><td>お客様が受付担当を呼び出し、直接話すこと。</td></tr>
   <tr><td>来客予定</td><td>氏名・日時・用件・担当者などを登録した来訪の予定。</td></tr>
   <tr><td>受付番号</td><td>来客予定ごとに発行する4桁の番号。</td></tr>
-  <tr><td>到着通知</td><td>来客が受付操作したことを管理者に伝える情報。</td></tr>
+  <tr><td>到着通知</td><td>来客が受付操作したことを担当に伝える情報。</td></tr>
+  <tr><td>帰宅通知</td><td>チェックアウトまたは帰宅を担当に伝える情報。ホテルはチェックアウト、会社は帰宅。</td></tr>
   <tr><td>直接応対</td><td>ビデオ通話およびチャットによるリアルタイムの会話。</td></tr>
 </table>
 <p class="caption">表1　用語定義</p>
@@ -264,12 +267,13 @@
   <tr><td class="c">F-10</td><td>来客予定を登録できること（氏名必須、会社、担当者、用件、日付、開始・終了、受付番号、メモ）。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-11</td><td>受付番号が空のときは4桁を自動発行すること。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-12</td><td>予定の編集・削除、日付別一覧ができること。</td><td class="c">必須</td></tr>
-  <tr><td class="c">F-13</td><td>本日の予定を時刻順に表示し、状態（予約／到着／通話中／対応済／取消／不来館）を管理できること。</td><td class="c">必須</td></tr>
-  <tr><td class="c">F-20</td><td>受付は大きなボタンで「ご予約の方」「お問い合わせ」を選べること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-13</td><td>本日の予定を時刻順に表示し、状態（予約／到着／通話中／チェックアウトまたは帰宅／対応済／取消／不来館）を管理できること。到着時刻と退出時刻が分かること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-20</td><td>受付は大きなボタンで「ご予約の方」「チェックアウト（会社はお帰り）」「お問い合わせ」を選べること。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-21</td><td>氏名または4桁番号で当日予約を照合し、到着を申告できること。該当なしはエラー表示。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-22</td><td>到着後は待機でき、来客から通話を開始できること。管理者からの通話は待機画面から自動でつなぐこと。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-23</td><td>予約なしでも氏名を入れて受付を呼び出せること。</td><td class="c">必須</td></tr>
-  <tr><td class="c">F-30</td><td>到着・着信を管理者画面に表示し、音で知らせること。ブラウザ通知は任意。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-24</td><td>滞在中の来客が氏名または番号でチェックアウト（会社は帰宅）を申告できること。管理者へ通知し、予定の状態に反映すること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-30</td><td>到着・帰宅（チェックアウト）・着信を管理者画面に表示し、音で知らせること。ブラウザ通知は任意。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-31</td><td>管理者は暗証番号で入室し、応答・お客様と話す・対応済にできること。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-40</td><td>ビデオとチャットで直接話せること。マイク／カメラのオンオフ、通話終了ができること。</td><td class="c">必須</td></tr>
   <tr><td class="c">F-50</td><td>施設名、ホテル／会社の種別、あいさつ文、4桁PINを設定できること。</td><td class="c">必須</td></tr>
@@ -280,9 +284,9 @@
 <table>
   <tr><th style="width:12%">画面ID</th><th style="width:20%">画面名</th><th>概要</th><th style="width:16%">利用者</th></tr>
   <tr><td class="c">SCR-01</td><td>トップ</td><td>システムの説明と入口選択</td><td>全員</td></tr>
-  <tr><td class="c">SCR-02</td><td>受付キオスク</td><td>予約確認、到着、問い合わせ、待機</td><td>来客</td></tr>
+  <tr><td class="c">SCR-02</td><td>受付キオスク</td><td>予約確認、到着、チェックアウト／帰宅、問い合わせ、待機</td><td>来客</td></tr>
   <tr><td class="c">SCR-03</td><td>管理者ログイン</td><td>4桁暗証番号</td><td>管理者</td></tr>
-  <tr><td class="c">SCR-04</td><td>本日の受付</td><td>当日予定、通知、着信</td><td>管理者</td></tr>
+  <tr><td class="c">SCR-04</td><td>本日の受付</td><td>当日予定、到着・帰宅通知、着信</td><td>管理者</td></tr>
   <tr><td class="c">SCR-05</td><td>スケジュール</td><td>日付別の予定CRUD</td><td>管理者</td></tr>
   <tr><td class="c">SCR-06</td><td>設定</td><td>施設情報とPIN</td><td>管理者</td></tr>
   <tr><td class="c">SCR-07</td><td>通話</td><td>映像、チャット、終了</td><td>両方</td></tr>

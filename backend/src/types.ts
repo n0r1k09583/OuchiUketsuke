@@ -4,6 +4,7 @@ export type AppointmentStatus =
   | "scheduled"
   | "arrived"
   | "in-call"
+  | "departed"
   | "completed"
   | "cancelled"
   | "no-show";
@@ -32,6 +33,7 @@ export type Appointment = {
   status: AppointmentStatus;
   notes: string;
   arrivedAt: string | null;
+  departedAt: string | null;
   createdAt: string;
 };
 
@@ -74,7 +76,7 @@ export type CallRecord = {
 
 export type AppNotification = {
   id: string;
-  type: "arrival" | "call";
+  type: "arrival" | "departure" | "call";
   appointmentId: string | null;
   callId: string | null;
   visitorName: string;

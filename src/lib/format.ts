@@ -59,7 +59,37 @@ export function randomVisitCode(): string {
   return String(Math.floor(1000 + Math.random() * 9000));
 }
 
-export function statusLabel(status: string): string {
+export function departureLabel(facilityType?: string): string {
+  return facilityType === "office" ? "帰宅" : "チェックアウト";
+}
+
+export function formatClockJa(iso: string): string {
+  return new Intl.DateTimeFormat("ja-JP", {
+    timeZone: TOKYO,
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(iso));
+}
+
+export function staySummary(
+  apt: { status: string; arrivedAt: string | null; departedAt?: string | null },
+  facilityType?: string,
+): string {
+  const parts: string[] = [];
+  if (apt.arrivedAt) parts.push(`到着 ${formatClockJa(apt.arrivedAt)}`);
+  if (apt.departedAt) parts.push(`${departureLabel(facilityType)} ${formatClockJa(apt.departedAt)}`);
+  else if (apt.status === "arrived" || apt.status === "in-call") parts.push("滞在中");
+  return parts.join(" ／ ");
+}
+
+export function notificationTypeLabel(type: string, facilityType?: string): string {
+  if (type === "arrival") return "到着";
+  if (type === "departure") return departureLabel(facilityType);
+  return "通話";
+}
+
+export function statusLabel(status: string, facilityType?: string): string {
+  if (status === "departed") return departureLabel(facilityType);
   const map: Record<string, string> = {
     scheduled: "予約",
     arrived: "到着",

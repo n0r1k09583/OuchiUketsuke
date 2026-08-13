@@ -2,17 +2,18 @@
 
 ## 0. 本書について
 
-本書は [docs/requirements.md](./requirements.md)（要件定義書）で決めた「何を作るか」を受けて、「どう作るか」を技術的な観点でまとめたものです。
+本書は [docs/requirements.md](./requirements.md) で決めた「何を作るか」を受けて、「どう作るか」をまとめる。  
+前回課題（Vite / Java Spring Boot Gradle / PostgreSQL）とは異なるスタックの理由は [docs/tech-selection.md](./tech-selection.md) を正とする。
 
 ## 1. 技術スタックと選定理由
 
-| レイヤー | 採用技術 | 選定理由 |
-|----------|----------|----------|
-| フロントエンド | Next.js（App Router）+ React + TypeScript | 受付・管理者・通話の画面。ブラウザだけで動く |
-| バックエンド | Node.js + Express + TypeScript | 予定・通知・通話API。画面と保存を分ける |
-| 保存 | JSONファイル（`backend/data/store.json`） | 課題範囲ではDB（RDS）を使わず、課金を避ける |
-| 通話 | WebRTC | 映像は端末同士。合図だけバックエンドが持つ |
-| インフラ | ローカル起動が本番相当。AWS実リソースは作らない | 学校提出でお金をかけないため。作った場合は即削除 |
+| レイヤー | 採用技術 | 前回（使わない） | 選定理由 |
+|----------|----------|------------------|----------|
+| フロント | Next.js App Router + TypeScript | Vite + React | 受付画面と API 転送を Next で扱う。Vite SPA にしない |
+| バック | Node.js + Express | Java + Spring Boot + Gradle | JVM に依存せず API を自前で置く |
+| 保存 | JSON ファイル | PostgreSQL | RDB を使わず問い合わせと予定を残す |
+| 通話 | WebRTC | — | お問い合わせをその場で話す |
+| インフラ | ローカル評価、AWS 常時稼働なし | — | 月額課金を出さない |
 
 フロントエンドとバックエンドは別プロセスである。
 
@@ -62,8 +63,9 @@ flowchart LR
 | date | string | YYYY-MM-DD |
 | startTime / endTime | string | HH:mm |
 | visitCode | string | 4桁の受付番号 |
-| status | string | scheduled / arrived / in-call / completed / cancelled / no-show |
+| status | string | scheduled / arrived / in-call / departed / completed / cancelled / no-show |
 | arrivedAt | string \| null | 到着時刻 |
+| departedAt | string \| null | チェックアウト／帰宅時刻 |
 | notes | string | メモ |
 
 ### 通話（Call）
@@ -80,7 +82,7 @@ flowchart LR
 
 ### 通知（Notification）
 
-到着または着信のメッセージ、既読フラグを持つ。
+到着・チェックアウト（会社は帰宅）または着信のメッセージ、既読フラグを持つ。
 
 ### ER図（概念）
 
@@ -89,7 +91,7 @@ erDiagram
     SETTINGS ||--o{ APPOINTMENT : "施設の予定"
     APPOINTMENT ||--o{ CALL : "任意"
     CALL ||--o{ MESSAGE : "チャット"
-    APPOINTMENT ||--o{ NOTIFICATION : "到着"
+    APPOINTMENT ||--o{ NOTIFICATION : "到着・帰宅"
     CALL ||--o{ NOTIFICATION : "着信"
 
     APPOINTMENT {
@@ -124,6 +126,7 @@ erDiagram
 | PATCH | `/api/appointments/[id]` | 予定の更新 |
 | DELETE | `/api/appointments/[id]` | 予定の削除 |
 | POST | `/api/checkin` | 氏名または番号で到着申告 |
+| POST | `/api/checkout` | 氏名・番号または予定IDでチェックアウト／帰宅 |
 | POST | `/api/calls` | 通話の作成（既存の着信があれば再利用） |
 | GET / PATCH | `/api/calls/[id]` | 通話の取得・状態更新 |
 | POST | `/api/calls/[id]/messages` | チャット送信 |

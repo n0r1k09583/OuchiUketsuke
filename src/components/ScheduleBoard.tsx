@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSnapshot } from "@/hooks/useSnapshot";
-import { addDaysISO, formatDateJa, statusLabel, todayISO } from "@/lib/format";
+import { addDaysISO, formatDateJa, statusLabel, staySummary, todayISO } from "@/lib/format";
 import { AppointmentForm, emptyForm, fromAppointment } from "./AppointmentForm";
 import type { Appointment } from "@/lib/types";
 
@@ -10,6 +10,8 @@ export function ScheduleBoard() {
   const { data, refresh } = useSnapshot(4000);
   const [date, setDate] = useState(todayISO());
   const [editing, setEditing] = useState<ReturnType<typeof emptyForm> | null>(null);
+
+  const facilityType = data?.settings.facilityType;
 
   const list = useMemo(
     () =>
@@ -75,8 +77,23 @@ export function ScheduleBoard() {
                 {apt.hostName ? ` ／ ${apt.hostName}` : ""}
               </p>
               <p className="text-xs text-navy/45">番号 {apt.visitCode}</p>
+              {staySummary(apt, facilityType) ? (
+                <p className="text-xs text-navy/55">{staySummary(apt, facilityType)}</p>
+              ) : null}
             </div>
-            <span className="text-xs text-navy/55">{statusLabel(apt.status)}</span>
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                apt.status === "arrived"
+                  ? "bg-[var(--arrive)] text-white"
+                  : apt.status === "departed"
+                    ? "bg-navy text-ivory"
+                    : apt.status === "in-call"
+                      ? "bg-gold text-navy-deep"
+                      : "text-navy/55"
+              }`}
+            >
+              {statusLabel(apt.status, facilityType)}
+            </span>
             <button type="button" className="text-sm text-navy" onClick={() => setEditing(fromAppointment(apt))}>
               編集
             </button>

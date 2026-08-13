@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSnapshot } from "@/hooks/useSnapshot";
-import { formatTime, todayISO } from "@/lib/format";
+import { departureLabel, formatTime, todayISO } from "@/lib/format";
 import type { Appointment, CallRecord } from "@/lib/types";
 
-type Mode = "home" | "reserved" | "inquiry" | "waiting";
+type Mode = "home" | "reserved" | "checkout" | "inquiry" | "waiting" | "departed";
 
 export function ReceptionKiosk() {
   const router = useRouter();
@@ -20,6 +20,8 @@ export function ReceptionKiosk() {
 
   const settings = data?.settings;
   const today = todayISO();
+  const leaveWord = departureLabel(settings?.facilityType);
+  const isOffice = settings?.facilityType === "office";
 
   const incoming = useMemo(() => {
     if (!appointment || !data) return null;
@@ -38,6 +40,14 @@ export function ReceptionKiosk() {
     }
   }, [incoming, mode, router]);
 
+  function goHome() {
+    setAppointment(null);
+    setQuery("");
+    setWalkInName("");
+    setError(null);
+    setMode("home");
+  }
+
   async function checkIn(e: FormEvent) {
     e.preventDefault();
     setError(null);
@@ -54,6 +64,29 @@ export function ReceptionKiosk() {
       }
       setAppointment(json.appointment);
       setMode("waiting");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "エラーが発生しました");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function checkOut(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setBusy(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const json = (await res.json()) as { appointment?: Appointment; error?: string };
+      if (!res.ok || !json.appointment) {
+        throw new Error(json.error ?? `${leaveWord}できませんでした`);
+      }
+      setAppointment(json.appointment);
+      setMode("departed");
     } catch (err) {
       setError(err instanceof Error ? err.message : "エラーが発生しました");
     } finally {
@@ -127,12 +160,30 @@ export function ReceptionKiosk() {
                 className="kiosk-btn border border-[var(--line)] bg-paper text-navy"
                 onClick={() => {
                   setError(null);
+                  setQuery("");
+                  setMode("checkout");
+                }}
+              >
+                {isOffice ? "お帰り・退出" : "チェックアウト"}
+              </button>
+              <button
+                type="button"
+                className="kiosk-btn border border-[var(--line)] bg-paper text-navy"
+                onClick={() => {
+                  setError(null);
                   setMode("inquiry");
                 }}
               >
                 お問い合わせ・直接お話
               </button>
             </div>
+            <p className="mt-8 text-xs leading-6 text-navy/45">
+              試す番号　
+              <span className="font-mono text-navy/70">4821</span> 田中　
+              <span className="font-mono text-navy/70">7390</span> 佐藤　
+              <span className="font-mono text-navy/70">1564</span> 鈴木　
+              <span className="font-mono text-navy/70">8203</span> 高橋
+            </p>
           </div>
         )}
 
@@ -157,11 +208,34 @@ export function ReceptionKiosk() {
             >
               {busy ? "確認中…" : "到着を知らせる"}
             </button>
+            <button type="button" className="mt-4 w-full py-3 text-sm text-navy/60" onClick={goHome}>
+              戻る
+            </button>
+          </form>
+        )}
+
+        {mode === "checkout" && (
+          <form onSubmit={checkOut} className="rounded-3xl bg-paper p-8 shadow-[0_16px_40px_rgba(16,36,60,0.08)]">
+            <h2 className="font-serif text-2xl text-navy">{leaveWord}</h2>
+            <p className="mt-2 text-sm leading-6 text-navy/65">
+              お名前、または4桁の受付番号を入力してください。{leaveWord}が担当者へ届きます。
+            </p>
+            <input
+              autoFocus
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="例）田中 美咲 ／ 4821"
+              className="mt-6 w-full rounded-2xl border border-[var(--line)] bg-ivory px-5 py-4 text-lg outline-none focus:border-gold"
+            />
+            {error && <p className="mt-3 text-sm text-[var(--alert)]">{error}</p>}
             <button
-              type="button"
-              className="mt-4 w-full py-3 text-sm text-navy/60"
-              onClick={() => setMode("home")}
+              type="submit"
+              disabled={busy || !query.trim()}
+              className="kiosk-btn mt-6 w-full bg-navy text-ivory disabled:opacity-40"
             >
+              {busy ? "確認中…" : `${leaveWord}を知らせる`}
+            </button>
+            <button type="button" className="mt-4 w-full py-3 text-sm text-navy/60" onClick={goHome}>
               戻る
             </button>
           </form>
@@ -188,11 +262,7 @@ export function ReceptionKiosk() {
             >
               {busy ? "接続中…" : "受付を呼び出す"}
             </button>
-            <button
-              type="button"
-              className="mt-4 w-full py-3 text-sm text-navy/60"
-              onClick={() => setMode("home")}
-            >
+            <button type="button" className="mt-4 w-full py-3 text-sm text-navy/60" onClick={goHome}>
               戻る
             </button>
           </form>
@@ -226,15 +296,22 @@ export function ReceptionKiosk() {
             >
               受付とビデオ通話する
             </button>
-            <button
-              type="button"
-              className="mt-4 w-full py-3 text-sm text-navy/60"
-              onClick={() => {
-                setAppointment(null);
-                setQuery("");
-                setMode("home");
-              }}
-            >
+            <button type="button" className="mt-4 w-full py-3 text-sm text-navy/60" onClick={goHome}>
+              受付トップへ
+            </button>
+          </div>
+        )}
+
+        {mode === "departed" && appointment && (
+          <div className="rounded-3xl bg-paper p-8 text-center shadow-[0_16px_40px_rgba(16,36,60,0.08)]">
+            <p className="text-xs tracking-[0.2em] text-navy/50">THANK YOU</p>
+            <h2 className="mt-3 font-serif text-3xl text-navy">{appointment.visitorName} 様</h2>
+            <p className="mt-3 text-sm leading-7 text-navy/70">
+              {isOffice
+                ? "帰宅をお伝えしました。お気をつけてお帰りください。"
+                : "チェックアウトをお伝えしました。またのお越しをお待ちしております。"}
+            </p>
+            <button type="button" className="kiosk-btn mt-8 w-full bg-navy text-ivory" onClick={goHome}>
               受付トップへ
             </button>
           </div>

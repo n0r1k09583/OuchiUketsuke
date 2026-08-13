@@ -18,10 +18,11 @@
 
 ## GitHub（学校提出用）
 
-リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
+提出フォームに入れる URL は次の1行です（リポジトリの URL）。
 
-**提出資料の入口（要件定義・画面画像・バックエンド詳細）:**  
-https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
+https://github.com/n0r1k09583/OuchiUketsuke
+
+`/blob/` や `docs/README` の長いアドレスは入れない。要件定義・画面画像・バックエンド詳細は、このリポジトリを開いて `docs` フォルダを見る。
 
 | 内容 | URL |
 |------|-----|

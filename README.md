@@ -15,9 +15,15 @@
 - 先生向け: [docs/aws-for-teacher.md](docs/aws-for-teacher.md) ／ [技術選定書](docs/tech-selection.md)
 - 動作確認: http://localhost:3000 （管理者 PIN `1234`）
 
+## GitHub（学校提出用）
+
+https://github.com/n0r1k09583/OuchiUketsuke
+
+先生への提出用リポジトリです（**非公開**）。ソース・要件定義・技術選定書をここに置いています。
+
 ## 公開URL
 
-**なし（未公開・学校提出用）。**
+**なし。** [RecipeManager の例](https://github.com/marinnk/RecipeManager) と同様、AWS の常時稼働は残しておらず、インターネット上の本番 URL は動いていません。動作確認はローカル（http://localhost:3000、PIN `1234`）です。月額課金はありません。
 
 ## 構成（フロント / バック）
 

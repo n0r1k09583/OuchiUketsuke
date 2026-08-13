@@ -27,6 +27,9 @@ description: >-
 | 本Skill | `.cursor/skills/ouchi-uketsuke-school/SKILL.md` | `~/.cursor/skills/ouchi-uketsuke-school/SKILL.md` |
 | AWS Skill | `.cursor/skills/ouchi-uketsuke-aws/SKILL.md` | `~/.cursor/skills/ouchi-uketsuke-aws/SKILL.md` |
 | 要件定義書（提出用HTML） | `docs/要件定義書.html` | — |
+| 提出資料の入口 | `docs/README.md` | — |
+| フロント画面画像 | `docs/images/` | — |
+| バックエンド詳細 | `docs/backend.md` | — |
 | 要件定義書（Markdown） | `docs/requirements.md` | — |
 | 基本設計書 | `docs/basic-design.md` | — |
 | 技術選定書 | `docs/tech-selection.md` | — |

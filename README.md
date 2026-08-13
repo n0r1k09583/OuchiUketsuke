@@ -17,9 +17,16 @@
 
 ## GitHub（学校提出用）
 
-https://github.com/n0r1k09583/OuchiUketsuke
+リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
 
-先生への提出用リポジトリです（**非公開**）。ソース・要件定義・技術選定書をここに置いています。
+**提出資料の入口（要件定義・画面画像・バックエンド詳細）:**  
+https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
+
+| 内容 | URL |
+|------|-----|
+| 要件定義書（HTML） | [docs/要件定義書.html](docs/要件定義書.html) |
+| フロント画面画像 | [docs/images](docs/images) |
+| バックエンド詳細 | [docs/backend.md](docs/backend.md) |
 
 ## 公開URL
 

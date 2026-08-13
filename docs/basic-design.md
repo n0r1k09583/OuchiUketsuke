@@ -138,15 +138,13 @@ erDiagram
 { "query": "4821" }
 ```
 
-**POST /api/calls（リクエスト）**
+**POST /api/checkout（リクエスト）**
 ```json
-{
-  "visitorName": "田中 美咲",
-  "appointmentId": "apt_xxx",
-  "reason": "arrival",
-  "startedBy": "visitor"
-}
+{ "query": "4821" }
 ```
+または `{ "appointmentId": "apt_xxx" }`。状態を `departed` にし、帰宅通知を作る。
+
+バックエンドの項目ごとの説明は [docs/backend.md](./backend.md) を正とする。
 
 ## 6. 通話の接続方針
 

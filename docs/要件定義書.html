@@ -35,7 +35,8 @@
       border: 1px solid var(--line); background: #fafafa; padding: 10px; margin: 8px 0 4px;
       page-break-inside: avoid;
     }
-    svg { display: block; margin: 0 auto; max-width: 100%; }
+    img.screen { width: 100%; border: 1px solid var(--line); margin: 8px 0 4px; }
+    figcaption.cap { font-size: 9.5pt; text-align: center; margin: 0 0 16px; color: var(--navy); }
     .uc { font-family: "Yu Gothic", "Meiryo", sans-serif; font-size: 9.5pt; white-space: pre-wrap; background: #fafafa; border: 1px solid var(--line); padding: 10px 12px; line-height: 1.65; }
     .note { font-size: 9.5pt; color: var(--muted); }
     .hint { max-width: 210mm; margin: 12px auto 0; text-align: center; font-family: "Yu Gothic", sans-serif; font-size: 12px; }
@@ -312,6 +313,41 @@
 </svg>
 </div>
 <p class="caption">図4　画面遷移図（実線：通常遷移　破線：通話）</p>
+
+<h3>8.1 実装画面（フロントエンド）</h3>
+<p>以下は実装した画面の画像である。GitHub の提出資料入口にも同じ画像を置いている。</p>
+<figure>
+  <img class="screen" src="images/01-top.png" alt="トップ画面" />
+  <figcaption class="cap">図5　トップ（受付／管理者の入口）</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/02-reception.png" alt="受付キオスク" />
+  <figcaption class="cap">図6　受付キオスク</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/03-reception-checkin.png" alt="到着申告" />
+  <figcaption class="cap">図7　到着申告</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/04-reception-checkout.png" alt="チェックアウト" />
+  <figcaption class="cap">図8　チェックアウト（会社設定では帰宅）</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/05-admin-login.png" alt="管理者ログイン" />
+  <figcaption class="cap">図9　管理者ログイン</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/06-admin-today.png" alt="本日の受付" />
+  <figcaption class="cap">図10　本日の受付（到着・帰宅通知）</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/07-admin-schedule.png" alt="スケジュール" />
+  <figcaption class="cap">図11　スケジュール管理</figcaption>
+</figure>
+<figure>
+  <img class="screen" src="images/08-admin-settings.png" alt="設定" />
+  <figcaption class="cap">図12　施設設定</figcaption>
+</figure>
 
 <h2>9. データ要件</h2>
 <div class="fig">

@@ -19,7 +19,12 @@ description: >-
 - **お問い合わせアプリ**。ホテルや会社の受付の人が使いやすいことが第一。
 - 前回課題（React+TypeScript+Vite+Tailwind、Java+Spring Boot+Gradle+PostgreSQL）とは **別スタック**。
 - 本課題: Next.js（画面）+ Express（API）+ JSON + WebRTC。Vite / Spring / PostgreSQL は入れない。
-- 一般公開しない。AWS 常時稼働サーバーは残さない。
+- GitHub は学校提出用に public（先生が URL を開ける）。アプリ本体の常時稼働（AWS本番）は残さない。
+
+## 提出URL
+
+- リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
+- 資料入口: https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 
 ## アーキテクチャ
 

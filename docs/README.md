@@ -5,7 +5,7 @@
 **リポジトリ:** https://github.com/n0r1k09583/OuchiUketsuke  
 **本ページ:** https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 
-一般公開はしていません（非公開リポジトリ）。インターネット上の本番 URL はありません。動作確認はローカル（http://localhost:3000、管理者 PIN `1234`）です。
+ソースと提出資料は GitHub で誰でも閲覧できます。アプリ本体のインターネット公開（常時稼働の受付画面）はありません。動作確認はローカル（http://localhost:3000、管理者 PIN `1234`）です。
 
 ---
 

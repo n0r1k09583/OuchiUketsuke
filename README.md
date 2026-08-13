@@ -10,7 +10,8 @@
 
 - **お問い合わせアプリ**（受付担当が主役）です。
 - 前回の Vite / Spring / PostgreSQL は使っていません（Next.js + Express + JSON + WebRTC）。
-- **一般公開していません。** 本番 URL はありません。
+- **アプリの本番公開はしていません。** インターネット上で動く受付画面はありません。
+- ソースと提出資料は GitHub で見られます（下記 URL）。
 - AWS は無料枠の方針のみ。常時稼働サーバーは残していません（月額課金なし）。
 - 先生向け: [docs/aws-for-teacher.md](docs/aws-for-teacher.md) ／ [技術選定書](docs/tech-selection.md)
 - 動作確認: http://localhost:3000 （管理者 PIN `1234`）

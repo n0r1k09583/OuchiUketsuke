@@ -2,20 +2,26 @@
 name: ouchi-uketsuke-school
 description: >-
   おうち受付の学校提出ワークフロー。Skill保存、ファイル保管、git commit、
-  非公開リポジトリへの push。要件定義書、AWS無料枠、一般公開禁止の話で使う。
+  GitHub push。要件定義書、画面画像、バックエンド詳細、AWS無料枠の話で使う。
 ---
 
-# おうち受付 — 学校提出（Skill・ファイル・非公開push）
+# おうち受付 — 学校提出（Skill・ファイル・push）
 
 ユーザーが「スキルして」「コマンドプッシュして」「ファイルに保管して」「ファイルに上書き保存」と言ったら、次を行う。
 
 ## 絶対ルール
 
-- アプリは **お問い合わせアプリ**（受付の人が使いやすい）。一般公開しない。
+- アプリは **お問い合わせアプリ**（受付の人が使いやすい）。
 - 前回スタック（Vite / Java Spring Boot Gradle / PostgreSQL）は使わない。
 - 証明資料は `docs/tech-selection.md`。
-- GitHub は **private** のみ。AWS 常時稼働は残さない。
+- GitHub は学校提出のため **public**（先生が URL を開いて確認できる）。
+- アプリ本体の本番 URL（常時動く受付画面）は作らない。AWS 常時稼働は残さない。
 - `store.json` は Git に含めない。force push しない。git config は変えない。
+
+## 提出URL
+
+- https://github.com/n0r1k09583/OuchiUketsuke
+- 資料入口: https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 
 ## ファイルに保管する場所（上書き）
 
@@ -40,9 +46,9 @@ description: >-
 git add -A
 git status
 git commit -m "学校提出用: おうち受付のソースと要件定義を保管"
-gh repo create OuchiUketsuke --private --source=. --remote=origin --push --description "学校提出用 おうち受付（非公開）"
+git push -u origin HEAD
 ```
 
-すでに remote がある場合は `git push -u origin HEAD`。
+remote が無い初回だけ `gh repo create OuchiUketsuke --public --source=. --remote=origin --push`。
 
-想定アカウント: `n0r1k09583`。リポジトリは private。公開（`--public`）にしない。
+想定アカウント: `n0r1k09583`。提出用リポジトリは public。AWS の本番公開はしない。

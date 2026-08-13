@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>要件定義書　おうち受付</title>
+  <style>
+    @page { size: A4; margin: 16mm 16mm 18mm; }
+    :root { --navy:#1a3354; --line:#c8c2b6; --bg:#f3eee4; --muted:#5a6270; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #e8e0d2; color: #222;
+      font-family: "Times New Roman", "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", serif;
+      line-height: 1.75;
+    }
+    .wrap { max-width: 210mm; margin: 20px auto; background: #fff; padding: 16mm 18mm 18mm; box-shadow: 0 8px 30px rgba(0,0,0,.12); }
+    h1 { font-size: 22pt; text-align: center; margin: 0; color: var(--navy); }
+    h2 { font-size: 14pt; color: var(--navy); border-bottom: 2px solid var(--navy); padding-bottom: 3px; margin: 1.8em 0 .7em; page-break-after: avoid; }
+    h3 { font-size: 12pt; color: var(--navy); margin: 1.3em 0 .4em; page-break-after: avoid; }
+    h4 { font-size: 11pt; margin: 1em 0 .3em; page-break-after: avoid; }
+    p, li { font-size: 10.5pt; }
+    p { margin: .45em 0; text-align: justify; }
+    ol.toc { padding-left: 1.4em; }
+    .cover { page-break-after: always; min-height: 252mm; display: flex; flex-direction: column; }
+    .school-head { text-align: center; letter-spacing: .3em; font-size: 11pt; color: var(--muted); margin-bottom: 8px; }
+    .cover-rule { height: 4px; background: var(--navy); margin: 12px 0 28px; }
+    .cover-rule.thin { height: 1px; background: #b8894a; margin: 0 0 28px; }
+    .sysname { text-align: center; font-size: 13pt; margin-top: 18px; }
+    .blank { border-bottom: 1px solid #333; display: inline-block; min-width: 12em; height: 1.2em; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 10pt; }
+    th, td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+    th { background: var(--bg); text-align: center; font-weight: 700; }
+    td.c { text-align: center; white-space: nowrap; }
+    .caption { font-size: 9.5pt; text-align: center; margin: 4px 0 16px; color: var(--navy); }
+    .fig {
+      border: 1px solid var(--line); background: #fafafa; padding: 10px; margin: 8px 0 4px;
+      page-break-inside: avoid;
+    }
+    svg { display: block; margin: 0 auto; max-width: 100%; }
+    .uc { font-family: "Yu Gothic", "Meiryo", sans-serif; font-size: 9.5pt; white-space: pre-wrap; background: #fafafa; border: 1px solid var(--line); padding: 10px 12px; line-height: 1.65; }
+    .note { font-size: 9.5pt; color: var(--muted); }
+    .hint { max-width: 210mm; margin: 12px auto 0; text-align: center; font-family: "Yu Gothic", sans-serif; font-size: 12px; }
+    footer.f { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 6px; font-size: 9pt; color: var(--muted); display: flex; justify-content: space-between; }
+    @media print {
+      body { background: #fff; }
+      .hint { display: none; }
+      .wrap { margin: 0; box-shadow: none; max-width: none; padding: 0; }
+      .cover { min-height: auto; }
+      a { color: inherit; text-decoration: none; }
+      h2, table, .fig { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<p class="hint">提出は PDF を使ってください。修正する場合は本ファイルをブラウザで開き、<b>Ctrl+P → PDFに保存</b> です。</p>
+<div class="wrap">
+
+<section class="cover">
+  <div>
+    <p class="school-head">課題提出用資料</p>
+    <div class="cover-rule"></div>
+    <p style="text-align:center;margin:0;letter-spacing:.4em;font-size:12pt;">システム開発課題</p>
+    <h1 style="margin-top:28px;font-size:28pt;letter-spacing:.12em;">要　件　定　義　書</h1>
+    <div class="cover-rule thin"></div>
+    <p class="sysname">システム名称：<b>おうち受付</b>（リモート来客受付システム）</p>
+    <p style="text-align:center;font-size:11pt;color:var(--muted);">ホテル・企業の来客受付を自宅から行うWebアプリケーション</p>
+
+    <table style="margin-top:48px;">
+      <tr><th style="width:28%">科目名</th><td><span class="blank"></span>（例：システム開発演習）</td></tr>
+      <tr><th>学校名・学科</th><td><span class="blank"></span></td></tr>
+      <tr><th>学年・クラス</th><td><span class="blank"></span></td></tr>
+      <tr><th>学籍番号</th><td><span class="blank"></span></td></tr>
+      <tr><th>氏名</th><td><span class="blank"></span></td></tr>
+      <tr><th>提出日</th><td>2026年8月13日</td></tr>
+      <tr><th>文書番号／版</th><td>OU-RD-001　第1.0版</td></tr>
+    </table>
+    <p class="note">※灰色の下線部に、学校・学科・学籍番号・氏名を記入して提出してください。PDFに直接書き込むか、印刷後に手書きでも構いません。</p>
+  </div>
+  <footer class="f"><span>おうち受付　要件定義書</span><span>1</span></footer>
+</section>
+
+<h2>改訂履歴</h2>
+<table>
+  <tr><th style="width:12%">版</th><th style="width:16%">日付</th><th>改訂内容</th><th style="width:16%">担当</th></tr>
+  <tr><td class="c">1.0</td><td class="c">2026/08/13</td><td>初版。学校提出用として、目的・業務要件・機能要件・画面・データ・非機能要件を定義した。</td><td class="c">作成者</td></tr>
+</table>
+
+<h2>目次</h2>
+<ol class="toc">
+  <li>はじめに</li>
+  <li>現状分析と導入目的</li>
+  <li>システム化の範囲</li>
+  <li>利用者（アクター）</li>
+  <li>業務フロー</li>
+  <li>ユースケース</li>
+  <li>機能要件</li>
+  <li>画面要件と画面遷移</li>
+  <li>データ要件</li>
+  <li>非機能要件</li>
+  <li>システム構成</li>
+  <li>開発環境</li>
+  <li>受入条件とテスト観点</li>
+  <li>制約・今後の課題</li>
+</ol>
+
+<h2>1. はじめに</h2>
+<h3>1.1 本書の目的</h3>
+<p>本書は、課題制作システム「おうち受付」の要件を定義する。誰が・何を・どこまで使うかを文章と図表で示し、設計・実装・評価の共通の基準とする。</p>
+
+<h3>1.2 システム概要</h3>
+<p>「おうち受付」は、ホテルのフロントや会社の受付に置く来客用画面と、担当者が自宅で見る管理者画面を、1つのWebシステムでつなぐアプリケーションである。来客の予定を登録し、お客様が入口に着いたことを管理者へ知らせ、問い合わせがあればビデオ通話とチャットで直接話せる。</p>
+
+<h3>1.3 用語定義</h3>
+<table>
+  <tr><th style="width:22%">用語</th><th>定義</th></tr>
+  <tr><td>施設</td><td>ホテルまたは会社など、来客を迎える場所。</td></tr>
+  <tr><td>受付画面</td><td>入口・フロントのタブレット／PCで開く来客向け画面。</td></tr>
+  <tr><td>管理者</td><td>自宅など遠隔地から受付を担当する職員。</td></tr>
+  <tr><td>来客予定</td><td>氏名・日時・用件・担当者などを登録した来訪の予定。</td></tr>
+  <tr><td>受付番号</td><td>来客予定ごとに発行する4桁の番号。</td></tr>
+  <tr><td>到着通知</td><td>来客が受付操作したことを管理者に伝える情報。</td></tr>
+  <tr><td>直接応対</td><td>ビデオ通話およびチャットによるリアルタイムの会話。</td></tr>
+</table>
+<p class="caption">表1　用語定義</p>
+
+<h2>2. 現状分析と導入目的</h2>
+<h3>2.1 想定する現状</h3>
+<p>ホテルや企業では、来客対応を入口の受付やフロントにいる担当者に頼っている。担当者が不在・在宅勤務・バックヤード作業中だと、来客の到着に気づけず、予定の確認も紙や口頭に散らばりやすい。</p>
+
+<h3>2.2 課題</h3>
+<table>
+  <tr><th style="width:10%">ID</th><th>課題</th><th>影響</th></tr>
+  <tr><td class="c">C-1</td><td>担当者が現場にいないと、来客の到着が分からない。</td><td>お待たせ、取りこぼし。</td></tr>
+  <tr><td class="c">C-2</td><td>来客予定が分散し、当日の見通しが悪い。</td><td>案内ミス、担当者不在。</td></tr>
+  <tr><td class="c">C-3</td><td>予約外の問い合わせに、その場で担当者と話せない。</td><td>折り返し待ち。</td></tr>
+  <tr><td class="c">C-4</td><td>ホテルと会社で受付の呼び方は違うが、やりたいことは近い。</td><td>用途ごとに別システムになりやすい。</td></tr>
+</table>
+<p class="caption">表2　現状の課題</p>
+
+<h3>2.3 導入目的</h3>
+<ol>
+  <li>自宅にいながら、来客の受付スケジュールを管理できる。</li>
+  <li>予定に入っているお客様が来たら、管理者にすぐ分かる。</li>
+  <li>お客様が問い合わせたいとき、受付担当と直接話せる。</li>
+  <li>ホテルでも会社でも、施設名を変えて使える。</li>
+</ol>
+
+<h2>3. システム化の範囲</h2>
+<h3>3.1 対象範囲</h3>
+<ul>
+  <li>来客予定の登録・照会・更新・削除</li>
+  <li>受付画面での予約確認（氏名または受付番号）と到着通知</li>
+  <li>予約なし来訪（お問い合わせ）の受付</li>
+  <li>管理者への到着・着信の画面表示と音</li>
+  <li>管理者と来客のビデオ通話・チャット</li>
+  <li>施設名、種別（ホテル／会社）、あいさつ、管理者暗証番号の設定</li>
+</ul>
+<h3>3.2 対象外</h3>
+<ul>
+  <li>宿泊予約、部屋割り、決済、社員証による入退館、ゲート開錠</li>
+  <li>メール／SMSでの事前案内、通話の録画保存</li>
+  <li>本格的な会員登録（メール認証、複数権限のロール管理）</li>
+</ul>
+<p class="note">本課題では「予定・到着・会話」に範囲を絞る。基幹システムとの連携は将来課題とする。</p>
+
+<h2>4. 利用者（アクター）</h2>
+<table>
+  <tr><th style="width:18%">アクター</th><th>説明</th><th>主な操作</th></tr>
+  <tr><td>来客</td><td>ホテルの宿泊者・面会者、企業への来訪者。</td><td>到着申告、問い合わせ、通話</td></tr>
+  <tr><td>管理者</td><td>自宅またはバックヤードで受付を行う職員。</td><td>ログイン、予定管理、通知確認、通話応答</td></tr>
+  <tr><td>システム</td><td>Webアプリケーション。</td><td>予定照合、通知生成、通話の仲介</td></tr>
+</table>
+<p class="caption">表3　アクター一覧</p>
+
+<h2>5. 業務フロー</h2>
+<h3>5.1 予約来客の到着</h3>
+<div class="uc">① 管理者が来客予定を登録する（氏名・日時・用件・担当者）。受付番号が発行される。
+② 来客が入口の受付画面で「ご予約の方」を選び、氏名または4桁番号を入力する。
+③ システムが当日の予定と照合し、状態を「到着」にする。
+④ 管理者画面に到着通知と音が出る。
+⑤ 来客は待機するか、受付とビデオ通話する。管理者は必要に応じて案内し、対応済にする。</div>
+<p class="caption">図1　予約来客の到着フロー</p>
+
+<h3>5.2 予約なしの問い合わせ</h3>
+<div class="uc">① 来客が「お問い合わせ・直接お話」を選び、氏名を入力する。
+② システムが着信を作り、管理者へ通知する。
+③ 管理者が応答し、ビデオまたはチャットで直接会話する。
+④ いずれかが通話を終了する。</div>
+<p class="caption">図2　問い合わせフロー</p>
+
+<h2>6. ユースケース</h2>
+<div class="fig">
+<svg viewBox="0 0 720 340" width="680" height="320" xmlns="http://www.w3.org/2000/svg" aria-label="ユースケース図">
+  <rect x="160" y="18" width="400" height="304" fill="none" stroke="#1a3354" stroke-width="1.5"/>
+  <text x="360" y="40" text-anchor="middle" font-size="13" fill="#1a3354">おうち受付</text>
+  <!-- actor left -->
+  <circle cx="70" cy="90" r="12" fill="none" stroke="#333"/>
+  <line x1="70" y1="102" x2="70" y2="148" stroke="#333"/>
+  <line x1="48" y1="118" x2="92" y2="118" stroke="#333"/>
+  <line x1="70" y1="148" x2="52" y2="180" stroke="#333"/>
+  <line x1="70" y1="148" x2="88" y2="180" stroke="#333"/>
+  <text x="70" y="205" text-anchor="middle" font-size="12">来客</text>
+  <!-- actor right -->
+  <circle cx="650" cy="90" r="12" fill="none" stroke="#333"/>
+  <line x1="650" y1="102" x2="650" y2="148" stroke="#333"/>
+  <line x1="628" y1="118" x2="672" y2="118" stroke="#333"/>
+  <line x1="650" y1="148" x2="632" y2="180" stroke="#333"/>
+  <line x1="650" y1="148" x2="668" y2="180" stroke="#333"/>
+  <text x="650" y="205" text-anchor="middle" font-size="12">管理者</text>
+  <!-- ovals -->
+  <ellipse cx="300" cy="90" rx="88" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="300" y="94" text-anchor="middle" font-size="11">到着を知らせる</text>
+  <ellipse cx="300" cy="150" rx="88" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="300" y="154" text-anchor="middle" font-size="11">問い合わせる</text>
+  <ellipse cx="300" cy="210" rx="88" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="300" y="214" text-anchor="middle" font-size="11">直接会話する</text>
+  <ellipse cx="430" cy="90" rx="96" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="430" y="94" text-anchor="middle" font-size="11">予定を管理する</text>
+  <ellipse cx="430" cy="150" rx="96" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="430" y="154" text-anchor="middle" font-size="11">到着を確認する</text>
+  <ellipse cx="430" cy="210" rx="96" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="430" y="214" text-anchor="middle" font-size="11">通話に応答する</text>
+  <ellipse cx="430" cy="270" rx="96" ry="24" fill="#fff" stroke="#1a3354"/>
+  <text x="430" y="274" text-anchor="middle" font-size="11">施設を設定する</text>
+  <line x1="92" y1="90" x2="212" y2="90" stroke="#333"/>
+  <line x1="92" y1="150" x2="212" y2="150" stroke="#333"/>
+  <line x1="92" y1="185" x2="212" y2="210" stroke="#333"/>
+  <line x1="628" y1="90" x2="526" y2="90" stroke="#333"/>
+  <line x1="628" y1="150" x2="526" y2="150" stroke="#333"/>
+  <line x1="628" y1="185" x2="526" y2="210" stroke="#333"/>
+  <line x1="628" y1="200" x2="526" y2="270" stroke="#333"/>
+  <line x1="388" y1="210" x2="334" y2="210" stroke="#333" stroke-dasharray="4 3"/>
+</svg>
+</div>
+<p class="caption">図3　ユースケース図</p>
+
+<h3>6.1 ユースケース記述（抜粋）</h3>
+<table>
+  <tr><th style="width:20%">項目</th><th>内容</th></tr>
+  <tr><td>名称</td><td>UC-01 到着を知らせる</td></tr>
+  <tr><td>アクター</td><td>来客（主）、管理者（副）</td></tr>
+  <tr><td>事前条件</td><td>当日の来客予定が登録されている。受付画面が開いている。</td></tr>
+  <tr><td>基本系列</td><td>①来客が「ご予約の方」を選ぶ　②氏名または受付番号を入力する　③システムが当日予定と照合する　④状態を到着にする　⑤管理者へ通知する　⑥来客に待機画面を示す</td></tr>
+  <tr><td>代替系列</td><td>該当予定がない場合、見つからない旨を表示し、問い合わせへ誘導できる。</td></tr>
+  <tr><td>事後条件</td><td>予定が到着状態になり、管理者はお客様の来訪を把握できる。</td></tr>
+</table>
+<p class="caption">表4　UC-01 到着を知らせる</p>
+
+<table>
+  <tr><th style="width:20%">項目</th><th>内容</th></tr>
+  <tr><td>名称</td><td>UC-02 直接会話する</td></tr>
+  <tr><td>アクター</td><td>来客、管理者</td></tr>
+  <tr><td>事前条件</td><td>来客が受付にいる。管理者はログイン済み。</td></tr>
+  <tr><td>基本系列</td><td>①来客または管理者が通話を開始する　②相手に着信が届く　③応答後、映像とチャットが使える　④終了すると元の画面に戻る</td></tr>
+  <tr><td>代替系列</td><td>カメラが使えない場合はチャットのみで用件を伝える。</td></tr>
+  <tr><td>事後条件</td><td>通話が終了状態になる。</td></tr>
+</table>
+<p class="caption">表5　UC-02 直接会話する</p>
+
+<h2>7. 機能要件</h2>
+<p>優先度「必須」は本課題の完成条件とする。</p>
+<table>
+  <tr><th style="width:10%">ID</th><th>要件</th><th style="width:10%">優先</th></tr>
+  <tr><td class="c">F-01</td><td>トップから受付画面と管理者画面を選べること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-10</td><td>来客予定を登録できること（氏名必須、会社、担当者、用件、日付、開始・終了、受付番号、メモ）。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-11</td><td>受付番号が空のときは4桁を自動発行すること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-12</td><td>予定の編集・削除、日付別一覧ができること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-13</td><td>本日の予定を時刻順に表示し、状態（予約／到着／通話中／対応済／取消／不来館）を管理できること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-20</td><td>受付は大きなボタンで「ご予約の方」「お問い合わせ」を選べること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-21</td><td>氏名または4桁番号で当日予約を照合し、到着を申告できること。該当なしはエラー表示。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-22</td><td>到着後は待機でき、来客から通話を開始できること。管理者からの通話は待機画面から自動でつなぐこと。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-23</td><td>予約なしでも氏名を入れて受付を呼び出せること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-30</td><td>到着・着信を管理者画面に表示し、音で知らせること。ブラウザ通知は任意。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-31</td><td>管理者は暗証番号で入室し、応答・お客様と話す・対応済にできること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-40</td><td>ビデオとチャットで直接話せること。マイク／カメラのオンオフ、通話終了ができること。</td><td class="c">必須</td></tr>
+  <tr><td class="c">F-50</td><td>施設名、ホテル／会社の種別、あいさつ文、4桁PINを設定できること。</td><td class="c">必須</td></tr>
+</table>
+<p class="caption">表6　機能要件一覧</p>
+
+<h2>8. 画面要件と画面遷移</h2>
+<table>
+  <tr><th style="width:12%">画面ID</th><th style="width:20%">画面名</th><th>概要</th><th style="width:16%">利用者</th></tr>
+  <tr><td class="c">SCR-01</td><td>トップ</td><td>システムの説明と入口選択</td><td>全員</td></tr>
+  <tr><td class="c">SCR-02</td><td>受付キオスク</td><td>予約確認、到着、問い合わせ、待機</td><td>来客</td></tr>
+  <tr><td class="c">SCR-03</td><td>管理者ログイン</td><td>4桁暗証番号</td><td>管理者</td></tr>
+  <tr><td class="c">SCR-04</td><td>本日の受付</td><td>当日予定、通知、着信</td><td>管理者</td></tr>
+  <tr><td class="c">SCR-05</td><td>スケジュール</td><td>日付別の予定CRUD</td><td>管理者</td></tr>
+  <tr><td class="c">SCR-06</td><td>設定</td><td>施設情報とPIN</td><td>管理者</td></tr>
+  <tr><td class="c">SCR-07</td><td>通話</td><td>映像、チャット、終了</td><td>両方</td></tr>
+</table>
+<p class="caption">表7　画面一覧</p>
+
+<div class="fig">
+<svg viewBox="0 0 720 260" width="680" height="250" xmlns="http://www.w3.org/2000/svg">
+  <rect x="280" y="8" width="160" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="360" y="31" text-anchor="middle" font-size="12">SCR-01 トップ</text>
+  <rect x="40" y="90" width="150" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="115" y="113" text-anchor="middle" font-size="12">SCR-02 受付</text>
+  <rect x="530" y="90" width="150" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="605" y="113" text-anchor="middle" font-size="12">SCR-03 ログイン</text>
+  <rect x="530" y="150" width="150" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="605" y="173" text-anchor="middle" font-size="12">SCR-04 本日</text>
+  <rect x="360" y="150" width="130" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="425" y="173" text-anchor="middle" font-size="11">SCR-05 予定</text>
+  <rect x="360" y="210" width="130" height="36" rx="4" fill="#fff" stroke="#1a3354"/><text x="425" y="233" text-anchor="middle" font-size="11">SCR-06 設定</text>
+  <rect x="40" y="180" width="150" height="36" rx="4" fill="#fff8e8" stroke="#b8894a"/><text x="115" y="203" text-anchor="middle" font-size="12">SCR-07 通話</text>
+  <line x1="300" y1="44" x2="115" y2="90" stroke="#333"/>
+  <line x1="420" y1="44" x2="605" y2="90" stroke="#333"/>
+  <line x1="605" y1="126" x2="605" y2="150" stroke="#333"/>
+  <line x1="530" y1="168" x2="490" y2="168" stroke="#333"/>
+  <line x1="425" y1="186" x2="425" y2="210" stroke="#333"/>
+  <line x1="115" y1="126" x2="115" y2="180" stroke="#b8894a"/>
+  <line x1="190" y1="198" x2="530" y2="168" stroke="#b8894a" stroke-dasharray="4 3"/>
+</svg>
+</div>
+<p class="caption">図4　画面遷移図（実線：通常遷移　破線：通話）</p>
+
+<h2>9. データ要件</h2>
+<div class="fig">
+<svg viewBox="0 0 720 280" width="680" height="270" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="20" width="160" height="110" fill="#fff" stroke="#1a3354"/>
+  <rect x="20" y="20" width="160" height="24" fill="#1a3354"/>
+  <text x="100" y="37" text-anchor="middle" font-size="12" fill="#fff">施設設定</text>
+  <text x="32" y="58" font-size="11">施設名</text>
+  <text x="32" y="76" font-size="11">種別</text>
+  <text x="32" y="94" font-size="11">あいさつ</text>
+  <text x="32" y="112" font-size="11">管理者PIN</text>
+
+  <rect x="220" y="10" width="180" height="168" fill="#fff" stroke="#1a3354"/>
+  <rect x="220" y="10" width="180" height="24" fill="#1a3354"/>
+  <text x="310" y="27" text-anchor="middle" font-size="12" fill="#fff">来客予定</text>
+  <text x="232" y="48" font-size="11">お客様名　用件</text>
+  <text x="232" y="66" font-size="11">日付　開始　終了</text>
+  <text x="232" y="84" font-size="11">受付番号</text>
+  <text x="232" y="102" font-size="11">担当者　会社</text>
+  <text x="232" y="120" font-size="11">状態</text>
+  <text x="232" y="138" font-size="11">到着時刻</text>
+  <text x="232" y="156" font-size="11">メモ</text>
+
+  <rect x="440" y="10" width="170" height="150" fill="#fff" stroke="#1a3354"/>
+  <rect x="440" y="10" width="170" height="24" fill="#1a3354"/>
+  <text x="525" y="27" text-anchor="middle" font-size="12" fill="#fff">通話</text>
+  <text x="452" y="48" font-size="11">来客名　理由</text>
+  <text x="452" y="66" font-size="11">状態</text>
+  <text x="452" y="84" font-size="11">開始／終了</text>
+  <text x="452" y="102" font-size="11">チャット</text>
+  <text x="452" y="120" font-size="11">接続情報</text>
+  <text x="452" y="138" font-size="11">予定ID（任意）</text>
+
+  <rect x="440" y="180" width="170" height="90" fill="#fff" stroke="#1a3354"/>
+  <rect x="440" y="180" width="170" height="24" fill="#1a3354"/>
+  <text x="525" y="197" text-anchor="middle" font-size="12" fill="#fff">通知</text>
+  <text x="452" y="218" font-size="11">種別（到着／通話）</text>
+  <text x="452" y="236" font-size="11">メッセージ　既読</text>
+  <text x="452" y="254" font-size="11">予定ID／通話ID</text>
+
+  <line x1="400" y1="90" x2="440" y2="85" stroke="#333"/>
+  <text x="408" y="78" font-size="10">1</text>
+  <text x="422" y="104" font-size="10">0..*</text>
+  <line x1="525" y1="160" x2="525" y2="180" stroke="#333"/>
+</svg>
+</div>
+<p class="caption">図5　データ関連（概念ER図）</p>
+
+<table>
+  <tr><th>エンティティ</th><th>主な属性</th><th>説明</th></tr>
+  <tr><td>来客予定</td><td>氏名、日付、時刻、受付番号、状態</td><td>当日照合の中心データ</td></tr>
+  <tr><td>通話</td><td>状態、チャット、接続情報</td><td>到着後案内と問い合わせで共有</td></tr>
+  <tr><td>通知</td><td>種別、既読</td><td>管理者へのお知らせ</td></tr>
+  <tr><td>施設設定</td><td>名称、PIN</td><td>ホテル／会社の切り替え</td></tr>
+</table>
+<p class="caption">表8　主要エンティティ</p>
+<p>保存方針：サーバー上のファイルに保存し、受付端末と管理者端末が同じ内容を参照する。ブラウザを閉じても予定は残す。</p>
+
+<h2>10. 非機能要件</h2>
+<table>
+  <tr><th style="width:10%">ID</th><th style="width:16%">分類</th><th>要件</th></tr>
+  <tr><td class="c">N-01</td><td>即時性</td><td>到着・着信は、管理者画面が開いていれば数秒以内に反映する（目安2秒以内）。</td></tr>
+  <tr><td class="c">N-02</td><td>可用性</td><td>映像がつながらなくてもチャットで業務を続けられる。</td></tr>
+  <tr><td class="c">N-03</td><td>操作性</td><td>受付の到着申告は、おおよそ3操作以内（選択→入力→送信）。</td></tr>
+  <tr><td class="c">N-04</td><td>セキュリティ</td><td>管理者機能は暗証番号後のみ。来客画面からPINが分からないこと。</td></tr>
+  <tr><td class="c">N-05</td><td>互換性</td><td>Windows の Google Chrome または Microsoft Edge の最新版で動作する。</td></tr>
+  <tr><td class="c">N-06</td><td>保守性</td><td>施設名やあいさつは設定画面で変更でき、プログラム改修を不要とする。</td></tr>
+  <tr><td class="c">N-07</td><td>デモ</td><td>初回起動時に当日のサンプル予定があり、到着から通話まで試せる。</td></tr>
+</table>
+<p class="caption">表9　非機能要件</p>
+
+<h2>11. システム構成</h2>
+<div class="fig">
+<svg viewBox="0 0 720 200" width="680" height="190" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="40" width="150" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="95" y="72" text-anchor="middle" font-size="12">入口タブレット</text>
+  <text x="95" y="92" text-anchor="middle" font-size="11">受付画面</text>
+  <rect x="20" y="120" width="150" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="95" y="152" text-anchor="middle" font-size="12">自宅PC</text>
+  <text x="95" y="172" text-anchor="middle" font-size="11">管理者画面</text>
+  <rect x="260" y="70" width="200" height="90" rx="6" fill="#fff8e8" stroke="#1a3354"/>
+  <text x="360" y="108" text-anchor="middle" font-size="13">Webアプリ</text>
+  <text x="360" y="128" text-anchor="middle" font-size="11">画面 ＋ API</text>
+  <rect x="540" y="80" width="160" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="620" y="112" text-anchor="middle" font-size="12">データ保存</text>
+  <text x="620" y="132" text-anchor="middle" font-size="11">予定・通知・通話</text>
+  <line x1="170" y1="75" x2="260" y2="100" stroke="#333"/>
+  <line x1="170" y1="155" x2="260" y2="130" stroke="#333"/>
+  <line x1="460" y1="115" x2="540" y2="115" stroke="#333"/>
+  <text x="360" y="30" text-anchor="middle" font-size="11" fill="#5a6270">ビデオ通話は端末同士（WebRTC）。合図だけサーバーが仲介</text>
+</svg>
+</div>
+<p class="caption">図6　システム構成図</p>
+
+<h2>12. 開発環境</h2>
+<table>
+  <tr><th style="width:28%">項目</th><th>内容</th></tr>
+  <tr><td>OS</td><td>Windows 10 / 11</td></tr>
+  <tr><td>言語</td><td>TypeScript, HTML, CSS</td></tr>
+  <tr><td>フレームワーク</td><td>Next.js（App Router）, React, Tailwind CSS</td></tr>
+  <tr><td>実行</td><td>Node.js　／　<code>npm run dev</code></td></tr>
+  <tr><td>通話</td><td>WebRTC（ブラウザ標準）</td></tr>
+  <tr><td>保存</td><td>サーバー上のJSONファイル</td></tr>
+</table>
+<p class="caption">表10　開発環境</p>
+
+<h2>13. 受入条件とテスト観点</h2>
+<p>次をすべて満たせば、本要件定義の範囲を満たしたとみなす。</p>
+<table>
+  <tr><th style="width:8%">No</th><th>確認内容</th><th>期待結果</th></tr>
+  <tr><td class="c">A-1</td><td>管理者が予定を登録する。</td><td>一覧に表示され、受付番号がある。</td></tr>
+  <tr><td class="c">A-2</td><td>別画面の受付で氏名または番号を入力する。</td><td>管理者に到着が分かり、音が鳴る。</td></tr>
+  <tr><td class="c">A-3</td><td>来客が通話を開始し、管理者が応答する。</td><td>直接会話（映像またはチャット）ができる。</td></tr>
+  <tr><td class="c">A-4</td><td>予約なしで問い合わせる。</td><td>管理者に着信し、会話できる。</td></tr>
+  <tr><td class="c">A-5</td><td>カメラを拒否してチャットを送る。</td><td>相手に文字が届く。</td></tr>
+  <tr><td class="c">A-6</td><td>誤ったPINで管理者画面に入る。</td><td>入室できない。</td></tr>
+</table>
+<p class="caption">表11　受入テスト観点</p>
+
+<h2>14. 制約・今後の課題</h2>
+<h3>14.1 前提・制約</h3>
+<ul>
+  <li>検証は開発サーバー起動中に行う。入口と自宅が同じURLにアクセスできること。</li>
+  <li>初版の認証は4桁暗証番号とする。</li>
+  <li>複雑なネットワークでは映像がつながらない場合がある。そのときはチャットで代替する。</li>
+</ul>
+<h3>14.2 今後の課題</h3>
+<ul>
+  <li>受付番号のメール／SMS通知</li>
+  <li>複数管理者、担当者ごとの着信振り分け</li>
+  <li>来訪履歴の出力、宿泊予約システムとの連携</li>
+  <li>多言語の受付画面</li>
+</ul>
+
+<h2>付録　当初の要望との対応</h2>
+<table>
+  <tr><th>学校課題としての要望</th><th>対応</th></tr>
+  <tr><td>自宅にいながら受付スケジュールを管理したい</td><td>F-10〜F-13、SCR-04、SCR-05</td></tr>
+  <tr><td>ホテルや会社の来客受付を自宅から行いたい</td><td>F-01、F-50、SCR-01〜03</td></tr>
+  <tr><td>予定のお客様が来たら管理者に分かる</td><td>F-20〜F-22、F-30</td></tr>
+  <tr><td>問い合わせたいとき直接話せる</td><td>F-22、F-23、F-40、UC-02</td></tr>
+</table>
+<p class="caption">表12　要望と要件の対応</p>
+
+<p style="margin-top:28px;">以上</p>
+<footer class="f"><span>おうち受付　要件定義書　OU-RD-001 第1.0版</span><span>提出用</span></footer>
+</div>
+</body>
+</html>

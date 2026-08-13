@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #1a3354;
+  --navy-deep: #10243c;
+  --ink: #243044;
+  --ivory: #f6f1e8;
+  --paper: #fffdf8;
+  --gold: #b8894a;
+  --gold-soft: #e8d5b5;
+  --line: rgba(26, 51, 84, 0.12);
+  --arrive: #2f6f5e;
+  --alert: #b23b3b;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-ink: var(--ink);
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --font-sans: var(--font-sans-jp);
+  --font-serif: var(--font-serif-jp);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--ivory);
+  font-family: var(--font-sans), "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+.grain {
+  background-color: var(--ivory);
+  background-image:
+    radial-gradient(ellipse at top, rgba(184, 137, 74, 0.12), transparent 55%),
+    linear-gradient(180deg, #f8f3ea 0%, #efe6d6 100%);
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.kiosk-btn {
+  min-height: 4.5rem;
+  border-radius: 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(178, 59, 59, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(178, 59, 59, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(178, 59, 59, 0);
+  }
+}
+
+.ringing {
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+}

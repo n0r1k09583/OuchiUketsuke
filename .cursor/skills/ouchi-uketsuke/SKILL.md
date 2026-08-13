@@ -23,8 +23,11 @@ description: >-
 
 ## 提出URL
 
+学校の提出欄にはリポジトリ URL か PR URL だけを入れる（`/blob/` は不可）。
+
 - リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
-- 資料入口: https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
+- プルリクエスト: https://github.com/n0r1k09583/OuchiUketsuke/pull/1
+- 添付zip: デスクトップ `おうち受付_添付用`（提出資料.zip と ソース.zip）
 
 ## アーキテクチャ
 

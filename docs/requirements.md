@@ -86,5 +86,5 @@ flowchart LR
 - [x] お客様がお問い合わせでき、担当が応答できる
 - [x] 到着と帰宅（チェックアウト）が担当に分かる
 - [x] カメラなしでもチャットが届く
-- [x] フロント（Next.js）とバック（Express）が分かれている
+- [x] フロント（`frontend/` Next.js）とバック（`backend/` Express）がフォルダごと分かれている
 - [x] 前回スタック（Vite / Java Spring Gradle / PostgreSQL）を使っていない

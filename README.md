@@ -36,15 +36,19 @@ https://github.com/n0r1k09583/OuchiUketsuke
 
 ## 構成（フロント / バック）
 
+フロントとバックは **別フォルダの別プロジェクト** です。画面の修正は `frontend/`、API の修正は `backend/` で行います。
+
 ```
 おうち受付
-├── フロントエンド（Next.js） … 画面。受付・管理者・通話
-└── バックエンド（Express）   … お問い合わせ・予定・通知の API
+├── frontend/   Next.js（画面。受付・管理者・通話）
+├── backend/    Express（お問い合わせ・予定・通知の API）
+├── docs/       提出資料
+└── infra/      Terraform（VPC / SG / EC2 の定義）
 ```
 
 | レイヤー | 役割 | 場所 | ポート |
 |----------|------|------|--------|
-| フロントエンド | 受付・管理者・通話 UI | `src/app` | 3000 |
+| フロントエンド | 受付・管理者・通話 UI | `frontend/` | 3000 |
 | バックエンド | API と JSON 保存 | `backend/` | 8080 |
 
 ## 使い方
@@ -87,8 +91,17 @@ https://github.com/n0r1k09583/OuchiUketsuke
 ## セットアップ
 
 ```sh
-npm install
+npm install --prefix frontend
 npm install --prefix backend
+npm run dev --prefix frontend
+npm run dev --prefix backend
+```
+
+まとめて起動する場合（ルート）:
+
+```sh
+npm install
+npm run install:all
 npm run dev
 ```
 

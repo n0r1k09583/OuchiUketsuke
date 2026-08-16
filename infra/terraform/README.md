@@ -33,9 +33,10 @@ RDS・CloudFront・NAT Gateway は、本アプリでは使いません（保存�
 
 ```powershell
 cd ouchi-uketsuke
-npm install
+npm install --prefix frontend
 npm install --prefix backend
-npm run dev
+npm run dev --prefix frontend
+npm run dev --prefix backend
 ```
 
 ## apply する場合（確認したらすぐ消す）

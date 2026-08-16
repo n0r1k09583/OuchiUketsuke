@@ -15,19 +15,19 @@
 | 通話 | WebRTC | — | お問い合わせをその場で話す |
 | インフラ | Terraform（VPC / SG / EC2）。評価はローカル。常時稼働なし | — | 月額課金を出さない。定義は残し、サーバーは残さない |
 
-フロントエンドとバックエンドは別プロセスである。
+フロントエンドとバックエンドは **別フォルダの別プロジェクト** である。画面の修正は `frontend/`、API の修正は `backend/` で行う。
 
-- フロントエンド: ポート 3000（画面）
-- バックエンド: ポート 8080（`/api/*`）
+- フロントエンド: `frontend/`（Next.js、ポート 3000、画面のみ）
+- バックエンド: `backend/`（Express、ポート 8080、API と JSON）
 - Next.js の rewrites で、ブラウザは今までどおり `/api/...` にアクセスする
 
 ## 2. システム構成図
 
 ```mermaid
 flowchart LR
-    Kiosk["入口タブレット<br/>フロントエンド"] --> Next["Next.js :3000<br/>画面"]
-    Home["自宅PC<br/>フロントエンド"] --> Next
-    Next -- "/api/* を転送" --> API["Express :8080<br/>バックエンド"]
+    Kiosk["入口タブレット"] --> Next["frontend/\nNext.js :3000\n画面のみ"]
+    Home["自宅PC"] --> Next
+    Next -- "/api/* を転送" --> API["backend/\nExpress :8080\nAPIのみ"]
     API --> Store[("store.json")]
     Kiosk -. WebRTC .-> Home
 ```

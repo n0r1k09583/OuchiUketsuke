@@ -38,10 +38,13 @@ NAT Gateway・ロードバランサー・RDS・CloudFront は使いません（�
 
 ```sh
 cd ouchi-uketsuke
-npm install
+npm install --prefix frontend
 npm install --prefix backend
-npm run dev
+npm run dev --prefix frontend
+npm run dev --prefix backend
 ```
+
+フロントは `frontend/`（:3000）、バックは `backend/`（:8080）です。混ぜて修正しません。
 
 | 画面 | URL |
 |------|-----|
@@ -56,8 +59,8 @@ npm run dev
 
 | | 役割 | 場所 |
 |---|------|------|
-| フロントエンド | 画面 | Next.js（ポート 3000） |
-| バックエンド | API・データ | Express（ポート 8080） |
+| フロントエンド | 画面 | `frontend/` Next.js（ポート 3000） |
+| バックエンド | API・データ | `backend/` Express（ポート 8080） |
 
 ブラウザの `/api/*` はフロントからバックエンドへ転送されます。
 

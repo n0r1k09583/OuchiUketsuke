@@ -28,7 +28,7 @@ GitHub のソースは先生確認のため public。**アプリを AWS 上で�
 
 - `docs/aws-for-teacher.md` と README の「学校の先生へ」を最新に保つ
 - 無料枠の構成を `infra/terraform/` に **定義として** 残す（VPC / SG / EC2。apply して作りっぱなしにしない）
-- 評価用は `npm run dev`（フロント 3000 / バック 8080）
+- 評価用は `frontend/` :3000 と `backend/` :8080（ルートの `npm run dev` でも可）
 
 ## エージェントがやってはいけないこと
 

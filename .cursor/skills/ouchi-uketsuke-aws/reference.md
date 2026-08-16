@@ -28,9 +28,10 @@
 ## 評価のしかた
 
 ```sh
-npm install
+npm install --prefix frontend
 npm install --prefix backend
-npm run dev
+npm run dev --prefix frontend
+npm run dev --prefix backend
 ```
 
 - 受付 http://localhost:3000/reception

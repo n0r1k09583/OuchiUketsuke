@@ -1,11 +1,29 @@
 # おうち受付 — 学校提出資料
 
-先生へ提出する資料の入口です。ソースは `frontend/`（画面）と `backend/`（API）に分かれています。
+先生へ提出する資料の入口です。**この1ページから、システム・要件定義書・データベース・Terraform apply の証明**をまとめて見られます。
+
+ソースは `frontend/`（画面）と `backend/`（API）に分かれています。
 
 **リポジトリ:** https://github.com/n0r1k09583/OuchiUketsuke  
 **本ページ:** https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 
 ソースと提出資料は GitHub で誰でも閲覧できます。アプリ本体のインターネット公開（常時稼働の受付画面）はありません。動作確認はローカル（http://localhost:3000、管理者 PIN `1234`）です。
+
+---
+
+## 0. 先生がまとめて見るもの
+
+| 見るもの | 内容 | URL |
+|----------|------|-----|
+| システム（ソース） | フロント `frontend/`、バック `backend/` | https://github.com/n0r1k09583/OuchiUketsuke |
+| 要件定義書 | 提出用 HTML | [docs/要件定義書.html](./要件定義書.html) |
+| 画面画像 | 受付・管理者のスクリーンショット | [docs/images](./images) |
+| データベース | SQLite の `.db`（ダウンロード可） | [docs/ouchi-uketsuke.db](./ouchi-uketsuke.db) |
+| Terraform apply の証明 | VPC / SG / EC2 の定義と apply → destroy | [docs/terraform-proof.md](./terraform-proof.md) |
+
+データベースの直接ダウンロード:
+
+https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db
 
 ---
 
@@ -71,7 +89,7 @@ HTML を PDF にするときは、ファイルをブラウザで開き **Ctrl+P 
 | 基本設計書 | 画面・データ・API・通話方針 | [docs/basic-design.md](./basic-design.md) |
 | 実装 | Express 本体 | [backend/src/server.ts](../backend/src/server.ts) |
 
-バックエンドは Express :8080。画面は Next.js が `/api/*` を転送します。保存は `backend/data/store.json`（Git には含めません）。
+バックエンドは Express :8080。画面は Next.js が `/api/*` を転送します。保存は SQLite（提出用スナップショット [docs/ouchi-uketsuke.db](./ouchi-uketsuke.db)、実行時は `backend/data/ouchi-uketsuke.db`）。
 
 ---
 
@@ -87,3 +105,15 @@ npm run dev --prefix backend
 - フロント http://localhost:3000
 - バック http://localhost:8080/api/health
 - 管理者 PIN `1234`
+
+---
+
+## 5. Terraform apply の証明
+
+| 資料 | 内容 | URL |
+|------|------|-----|
+| **apply の証明** | init / plan / apply / destroy と作られる資源 | [docs/terraform-proof.md](./terraform-proof.md) |
+| Terraform 本体 | VPC・SG・EC2 の定義 | [infra/terraform](../infra/terraform) |
+| AWS の見方 | 無料枠・常時稼働なし | [docs/aws-for-teacher.md](./aws-for-teacher.md) |
+
+`terraform apply` で VPC・セキュリティグループ・EC2 を作れる定義を置いています。確認後は `terraform destroy` し、常時稼働サーバーは残していません。

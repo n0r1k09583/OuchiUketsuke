@@ -9,7 +9,7 @@ export function SettingsPanel() {
   if (!data) {
     return <p className="text-sm text-navy/50">読み込み中…</p>;
   }
-  return <SettingsForm key={data.settings.facilityName} initial={data.settings} onSaved={refresh} />;
+  return <SettingsForm key={`${data.settings.facilityName}-${data.settings.facilityType}`} initial={data.settings} onSaved={refresh} />;
 }
 
 function SettingsForm({

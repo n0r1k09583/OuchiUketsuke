@@ -15,12 +15,22 @@
 |------|------|
 | 目的 | 学校提出用に、AWS を無料枠の範囲で扱う |
 | AWS CLI | 課題作業のためダウンロード・導入した |
-| 構成の定義 | `infra/terraform/` に無料枠向けの方針を残した |
-| 常時稼働サーバー | **残していない**（月額費用を出さないため） |
+| Terraform | `infra/terraform/` に VPC・セキュリティグループ・EC2 を定義した |
+| 常時稼働サーバー | **残していない**（確認後は destroy。月額費用を出さないため） |
 | 一般公開 | ソースは GitHub で閲覧可。AWS の常時稼働アプリは残していない |
 
-月額の AWS 費用がかからないよう、NAT Gateway・ロードバランサー・RDS など、高くなりやすいものは使いません。  
-確認が終わったクラウド資源は残さず、提出用の説明と設定だけを残しています。
+Terraform の本体は次です。`main.tf` だけでなく、課題で求められている resource も含めています。
+
+GitHub: https://github.com/n0r1k09583/OuchiUketsuke/tree/main/infra/terraform
+
+| ファイル | 定義 |
+|----------|------|
+| `network.tf` | VPC、Internet Gateway、公開サブネット |
+| `security_groups.tf` | SSH とアプリポートを自分の IP だけ許可 |
+| `ec2.tf` | 無料枠の t3.micro |
+
+NAT Gateway・ロードバランサー・RDS・CloudFront は使いません（高くなりやすい／本アプリは JSON 保存）。  
+確認が終わったクラウド資源は残しません。
 
 ## 先生が動作を見るとき（こちらを使ってください）
 

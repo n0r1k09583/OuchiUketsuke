@@ -1,0 +1,12 @@
+# コピーして terraform.tfvars を作る（terraform.tfvars は Git に入れない）
+# cp terraform.tfvars.example terraform.tfvars
+
+aws_region   = "ap-northeast-1"
+project_name = "ouchi-uketsuke"
+instance_type = "t3.micro"
+
+# curl https://checkip.amazonaws.com で確認した自分の IP
+my_ip = "203.0.113.1"
+
+# ssh-keygen -t ed25519 -f ~/.ssh/ouchi-uketsuke-ec2 -N "" で作った公開鍵の1行
+ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIREPLACE_WITH_YOUR_PUBLIC_KEY ouchi-uketsuke"

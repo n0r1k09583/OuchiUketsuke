@@ -45,3 +45,9 @@ next-env.d.ts
 # runtime data
 /data/store.json
 /backend/data/store.json
+
+# terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/terraform.tfvars

@@ -6,17 +6,17 @@
 
 ## 1. 役割
 
-フロントエンド（Next.js :3000）は画面だけを持ちます。予定・通知・通話の合図・設定の読み書きは、すべてバックエンド（Express :8080）が行います。
+フロントエンド（`frontend/` の Next.js :3000）は画面だけを持ちます。予定・通知・通話の合図・設定の読み書きは、すべてバックエンド（`backend/` の Express :8080）が行います。フォルダもプロジェクトも分けています。
 
 ```
-ブラウザ  →  Next.js :3000（画面）
-                └── /api/* を転送 →  Express :8080
-                                         └── backend/data/store.json
+ブラウザ  →  frontend/  Next.js :3000（画面）
+                └── /api/* を転送 →  backend/  Express :8080
+                                              └── backend/data/store.json
 ```
 
-- 起動: `npm run dev --prefix backend` またはルートの `npm run dev`
+- 起動: `cd backend` → `npm install` → `npm run dev`
 - 生存確認: `GET http://localhost:8080/api/health`
-- フロントの転送先: `next.config.ts` の `BACKEND_URL`（既定 `http://localhost:8080`）
+- フロントの転送先: `frontend/next.config.ts` の `BACKEND_URL`（既定 `http://localhost:8080`）
 
 ## 2. ファイル構成
 
@@ -151,7 +151,7 @@ POST /api/calls
 | ビデオ映像 | 端末同士（WebRTC）。合図だけバックエンド |
 | チャット本文 | バックエンドの `calls[].messages` |
 
-フロントに API Route（`src/app/api`）は置きません。
+フロント（`frontend/`）に API Route は置きません。データはバックエンドだけが書きます。
 
 ## 7. 初期サンプル（試す番号）
 

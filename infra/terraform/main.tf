@@ -1,10 +1,14 @@
-# おうち受付 — インフラ定義（学校提出用・無料枠）
+# おうち受付 — Terraform（学校提出・無料枠）
 #
-# 先生へ: AWS を無料枠の範囲で学校提出用に扱うための定義です。
-# 一般公開はしません。月額課金を避けるため、常時稼働リソースは作らないでください。
+# 課題として VPC / セキュリティグループ / EC2 を定義する。
+# 学校の例（RecipeManager）と同じく、ファイルを分けている。
+#   network.tf          … VPC、Internet Gateway、公開サブネット
+#   security_groups.tf  … EC2 用セキュリティグループ
+#   ec2.tf              … t3.micro
 #
-# 禁止: terraform apply で EC2/RDS/NAT を残すこと。
-# 誤って apply したら直後に terraform destroy -auto-approve
+# 常時稼働では残さない。確認が終わったら terraform destroy する。
+# 入れないもの: NAT Gateway / ALB / RDS / CloudFront
+# （NAT・LB は課金しやすい。データは JSON なので RDS は使わない。本番 URL は作らない）
 
 terraform {
   required_version = ">= 1.5.0"
@@ -16,14 +20,16 @@ terraform {
   }
 }
 
-# リージョンは無料枠で扱いやすい東京。
-# 実リソースは定義しない（学校提出はローカル起動、AWS は方針と Skill のみ残す）。
 provider "aws" {
-  region = "ap-northeast-1"
+  region = var.aws_region
+
+  default_tags {
+    tags = local.school_tags
+  }
 }
 
-# タグだけ学校提出用と分かるように残す（リソース本体は作らない）。
 locals {
+  name = var.project_name
   school_tags = {
     Project    = "OuchiUketsuke"
     Purpose    = "school-assignment"

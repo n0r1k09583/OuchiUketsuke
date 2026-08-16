@@ -23,15 +23,20 @@ description: >-
 
 ## 提出URL
 
+学校の提出欄にはリポジトリ URL か PR URL だけを入れる（`/blob/` は不可）。
+
 - リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
-- 資料入口: https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
+- プルリクエスト: https://github.com/n0r1k09583/OuchiUketsuke/pull/1
+- 添付zip: デスクトップ `おうち受付_添付用`（提出資料.zip と ソース.zip）
 
 ## アーキテクチャ
 
-- フロント: Next.js `src/app` ポート 3000。`/api/*` は `BACKEND_URL`（既定 `http://localhost:8080`）へ rewrites。
+フロントとバックは **別フォルダの別プロジェクト**。画面は `frontend/`、API は `backend/`。混ぜない。
+
+- フロント: `frontend/` Next.js ポート 3000。`/api/*` は `BACKEND_URL`（既定 `http://localhost:8080`）へ rewrites。
 - バック: `backend/src/server.ts` ポート 8080。保存は `backend/data/store.json`（Git に含めない）。
 - フロントに API Route を戻さない。データはバックエンドだけが書く。
-- 起動: `npm install` / `npm install --prefix backend` / `npm run dev`
+- 起動: `npm install --prefix frontend` / `npm install --prefix backend` / それぞれ `npm run dev`（またはルートの `npm run dev`）
 
 ## 到着と帰宅（チェックアウト）
 
@@ -45,7 +50,7 @@ description: >-
 ## 管理者スケジュール（確認済み・崩さない）
 
 - URL: http://localhost:3000/admin/schedule
-- 実装: `src/app/admin/schedule/page.tsx` → `src/components/ScheduleBoard.tsx`
+- 実装: `frontend/src/app/admin/schedule/page.tsx` → `frontend/src/components/ScheduleBoard.tsx`
 - PIN: `1234`（`AdminShell`）
 - できること: 日付移動、追加、時刻順一覧、編集、削除、受付番号表示
 - 「本日の受付」(`/admin`) は到着・帰宅・着信。「予定の CRUD」はスケジュール画面に置く。混ぜない。
@@ -65,7 +70,7 @@ description: >-
 
 ## 試す番号（管理者 PIN `1234`）
 
-定数は `src/lib/demoSamples.ts`。シードは `backend/src/store.ts`。トップに表、受付ホーム下部にも当日番号を出す。
+定数は `frontend/src/lib/demoSamples.ts`。シードは `backend/src/store.ts`。トップに表、受付ホーム下部にも当日番号を出す。
 
 | 番号 | お名前 | 用件 | いつ | 試し方 |
 |------|--------|------|------|--------|
@@ -79,6 +84,7 @@ description: >-
 
 ## 改修時
 
+- 画面の修正は `frontend/`、API の修正は `backend/`。同じファイルに混ぜない。
 - スケジュール画面のレイアウト・操作感を勝手に大きく変えない。
 - 受付の大きなボタン、管理者の一覧＋通知、という役割分担を維持する。
 - 試す番号を変えるときは `demoSamples.ts` と `store.ts` のシードを揃える。

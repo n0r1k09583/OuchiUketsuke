@@ -19,16 +19,16 @@ GitHub のソースは先生確認のため public。**アプリを AWS 上で�
    EC2 / RDS / NAT Gateway / ALB / CloudFront を常時稼働で残さない。
 3. **有料になりやすいものは使わない**  
    NAT Gateway、ロードバランサー、有料 RDS、固定の大きいインスタンスは禁止。
-4. **先生向けには「無料枠で学校提出」と分かる文書を残す**  
-   実サーバーを残すことと、方針を文書に残すことは別。残すのは文書と Skill だけ。
+4. **先生向けには「無料枠で学校提出」と分かる文書と Terraform を残す**  
+   実サーバーを常時残すことと、VPC / SG / EC2 の定義を残すことは別。定義は `infra/terraform/` に置く。
 5. **認証キーを Git に書かない**  
    `.aws/credentials`、アクセスキーはコミットしない。
 
 ## エージェントがやってよいこと
 
 - `docs/aws-for-teacher.md` と README の「学校の先生へ」を最新に保つ
-- 無料枠の構成を `infra/terraform/` に **定義として** 残す（apply しない）
-- 評価用は `npm run dev`（フロント 3000 / バック 8080）
+- 無料枠の構成を `infra/terraform/` に **定義として** 残す（VPC / SG / EC2。apply して作りっぱなしにしない）
+- 評価用は `frontend/` :3000 と `backend/` :8080（ルートの `npm run dev` でも可）
 
 ## エージェントがやってはいけないこと
 

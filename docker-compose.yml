@@ -1,10 +1,11 @@
 services:
   backend:
     image: node:24-alpine
-    working_dir: /app/backend
+    working_dir: /app
     command: sh -c "npm install && npm run dev"
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app
+      - /app/node_modules
     ports:
       - "8080:8080"
     environment:
@@ -13,11 +14,10 @@ services:
   frontend:
     image: node:24-alpine
     working_dir: /app
-    command: sh -c "npm install && npm run dev:frontend"
+    command: sh -c "npm install && npm run dev"
     volumes:
-      - .:/app
+      - ./frontend:/app
       - /app/node_modules
-      - /app/backend/node_modules
     ports:
       - "3000:3000"
     environment:

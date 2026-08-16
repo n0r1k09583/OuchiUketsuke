@@ -421,23 +421,29 @@
 
 <h2>11. システム構成</h2>
 <div class="fig">
-<svg viewBox="0 0 720 200" width="680" height="190" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="40" width="150" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
-  <text x="95" y="72" text-anchor="middle" font-size="12">入口タブレット</text>
-  <text x="95" y="92" text-anchor="middle" font-size="11">受付画面</text>
-  <rect x="20" y="120" width="150" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
-  <text x="95" y="152" text-anchor="middle" font-size="12">自宅PC</text>
-  <text x="95" y="172" text-anchor="middle" font-size="11">管理者画面</text>
-  <rect x="260" y="70" width="200" height="90" rx="6" fill="#fff8e8" stroke="#1a3354"/>
-  <text x="360" y="108" text-anchor="middle" font-size="13">Webアプリ</text>
-  <text x="360" y="128" text-anchor="middle" font-size="11">画面 ＋ API</text>
-  <rect x="540" y="80" width="160" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
-  <text x="620" y="112" text-anchor="middle" font-size="12">データ保存</text>
-  <text x="620" y="132" text-anchor="middle" font-size="11">予定・通知・通話</text>
-  <line x1="170" y1="75" x2="260" y2="100" stroke="#333"/>
-  <line x1="170" y1="155" x2="260" y2="130" stroke="#333"/>
-  <line x1="460" y1="115" x2="540" y2="115" stroke="#333"/>
-  <text x="360" y="30" text-anchor="middle" font-size="11" fill="#5a6270">ビデオ通話は端末同士（WebRTC）。合図だけサーバーが仲介</text>
+<svg viewBox="0 0 760 220" width="700" height="210" xmlns="http://www.w3.org/2000/svg">
+  <rect x="20" y="50" width="140" height="64" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="90" y="78" text-anchor="middle" font-size="12">入口タブレット</text>
+  <text x="90" y="96" text-anchor="middle" font-size="11">受付画面</text>
+  <rect x="20" y="130" width="140" height="64" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="90" y="158" text-anchor="middle" font-size="12">自宅PC</text>
+  <text x="90" y="176" text-anchor="middle" font-size="11">管理者画面</text>
+  <rect x="210" y="70" width="170" height="90" rx="6" fill="#fff8e8" stroke="#1a3354"/>
+  <text x="295" y="104" text-anchor="middle" font-size="13">フロントエンド</text>
+  <text x="295" y="124" text-anchor="middle" font-size="11">frontend/　Next.js :3000</text>
+  <text x="295" y="142" text-anchor="middle" font-size="11">画面のみ</text>
+  <rect x="420" y="70" width="170" height="90" rx="6" fill="#eef4fb" stroke="#1a3354"/>
+  <text x="505" y="104" text-anchor="middle" font-size="13">バックエンド</text>
+  <text x="505" y="124" text-anchor="middle" font-size="11">backend/　Express :8080</text>
+  <text x="505" y="142" text-anchor="middle" font-size="11">API のみ</text>
+  <rect x="630" y="80" width="110" height="70" rx="6" fill="#fff" stroke="#1a3354"/>
+  <text x="685" y="110" text-anchor="middle" font-size="12">JSON保存</text>
+  <text x="685" y="130" text-anchor="middle" font-size="11">store.json</text>
+  <line x1="160" y1="82" x2="210" y2="100" stroke="#333"/>
+  <line x1="160" y1="162" x2="210" y2="130" stroke="#333"/>
+  <line x1="380" y1="115" x2="420" y2="115" stroke="#333"/>
+  <line x1="590" y1="115" x2="630" y2="115" stroke="#333"/>
+  <text x="380" y="28" text-anchor="middle" font-size="11" fill="#5a6270">フロントとバックは別フォルダ。ビデオ通話は端末同士（WebRTC）。合図だけサーバーが仲介</text>
 </svg>
 </div>
 <p class="caption">図6　システム構成図</p>
@@ -447,10 +453,11 @@
   <tr><th style="width:28%">項目</th><th>内容</th></tr>
   <tr><td>OS</td><td>Windows 10 / 11</td></tr>
   <tr><td>言語</td><td>TypeScript, HTML, CSS</td></tr>
-  <tr><td>フレームワーク</td><td>Next.js（App Router）, React, Tailwind CSS</td></tr>
-  <tr><td>実行</td><td>Node.js　／　<code>npm run dev</code></td></tr>
+  <tr><td>フロントエンド</td><td>Next.js（App Router）　フォルダ <code>frontend/</code></td></tr>
+  <tr><td>バックエンド</td><td>Node.js + Express　フォルダ <code>backend/</code></td></tr>
+  <tr><td>実行</td><td>それぞれ <code>npm run dev</code>（画面 :3000／API :8080）</td></tr>
   <tr><td>通話</td><td>WebRTC（ブラウザ標準）</td></tr>
-  <tr><td>保存</td><td>サーバー上のJSONファイル</td></tr>
+  <tr><td>保存</td><td>バックエンドの JSON ファイル</td></tr>
 </table>
 <p class="caption">表10　開発環境</p>
 

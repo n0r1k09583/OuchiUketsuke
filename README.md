@@ -12,16 +12,17 @@
 - 前回の Vite / Spring / PostgreSQL は使っていません（Next.js + Express + JSON + WebRTC）。
 - **アプリの本番公開はしていません。** インターネット上で動く受付画面はありません。
 - ソースと提出資料は GitHub で見られます（下記 URL）。
-- AWS は無料枠の方針のみ。常時稼働サーバーは残していません（月額課金なし）。
+- AWS は Terraform で VPC・セキュリティグループ・EC2 を定義。常時稼働サーバーは残していません（月額課金なし）。
 - 先生向け: [docs/aws-for-teacher.md](docs/aws-for-teacher.md) ／ [技術選定書](docs/tech-selection.md)
 - 動作確認: http://localhost:3000 （管理者 PIN `1234`）
 
 ## GitHub（学校提出用）
 
-リポジトリ: https://github.com/n0r1k09583/OuchiUketsuke
+提出フォームに入れる URL は次の1行です（リポジトリの URL）。
 
-**提出資料の入口（要件定義・画面画像・バックエンド詳細）:**  
-https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
+https://github.com/n0r1k09583/OuchiUketsuke
+
+`/blob/` や `docs/README` の長いアドレスは入れない。要件定義・画面画像・バックエンド詳細は、このリポジトリを開いて `docs` フォルダを見る。
 
 | 内容 | URL |
 |------|-----|
@@ -35,15 +36,19 @@ https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 
 ## 構成（フロント / バック）
 
+フロントとバックは **別フォルダの別プロジェクト** です。画面の修正は `frontend/`、API の修正は `backend/` で行います。
+
 ```
 おうち受付
-├── フロントエンド（Next.js） … 画面。受付・管理者・通話
-└── バックエンド（Express）   … お問い合わせ・予定・通知の API
+├── frontend/   Next.js（画面。受付・管理者・通話）
+├── backend/    Express（お問い合わせ・予定・通知の API）
+├── docs/       提出資料
+└── infra/      Terraform（VPC / SG / EC2 の定義）
 ```
 
 | レイヤー | 役割 | 場所 | ポート |
 |----------|------|------|--------|
-| フロントエンド | 受付・管理者・通話 UI | `src/app` | 3000 |
+| フロントエンド | 受付・管理者・通話 UI | `frontend/` | 3000 |
 | バックエンド | API と JSON 保存 | `backend/` | 8080 |
 
 ## 使い方
@@ -86,8 +91,17 @@ https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
 ## セットアップ
 
 ```sh
-npm install
+npm install --prefix frontend
 npm install --prefix backend
+npm run dev --prefix frontend
+npm run dev --prefix backend
+```
+
+まとめて起動する場合（ルート）:
+
+```sh
+npm install
+npm run install:all
 npm run dev
 ```
 

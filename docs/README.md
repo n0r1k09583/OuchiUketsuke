@@ -1,6 +1,6 @@
 # おうち受付 — 学校提出資料
 
-先生へ提出する資料の入口です。ソース本体はリポジトリのルートにあります。
+先生へ提出する資料の入口です。ソースは `frontend/`（画面）と `backend/`（API）に分かれています。
 
 **リポジトリ:** https://github.com/n0r1k09583/OuchiUketsuke  
 **本ページ:** https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/README.md
@@ -59,7 +59,7 @@ HTML を PDF にするときは、ファイルをブラウザで開き **Ctrl+P 
 | `07-admin-schedule.png` | スケジュール |
 | `08-admin-settings.png` | 設定 |
 
-フロントの実装場所: `src/app`（Next.js :3000）
+フロントの実装場所: `frontend/`（Next.js :3000）。バックエンドは `backend/`（Express :8080）。別プロジェクトです。
 
 ---
 
@@ -78,9 +78,10 @@ HTML を PDF にするときは、ファイルをブラウザで開き **Ctrl+P 
 ## 4. 起動（評価用）
 
 ```sh
-npm install
+npm install --prefix frontend
 npm install --prefix backend
-npm run dev
+npm run dev --prefix frontend
+npm run dev --prefix backend
 ```
 
 - フロント http://localhost:3000

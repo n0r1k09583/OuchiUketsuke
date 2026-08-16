@@ -2,16 +2,19 @@
 
 先生確認用のデータベースファイルです。アプリ本体は AWS に常時公開していません（無料枠・月額課金なし）。評価はローカル起動です。
 
-## ファイル
+## ファイル（先生への提出用）
 
-実行すると `backend/data/ouchi-uketsuke.db` が作られます（Git には含めません）。
+ダウンロード（右クリックで保存できます）:
 
-```sh
-npm install --prefix backend
-npm run dev --prefix backend
-```
+https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db
 
-DB Browser for SQLite などで、その `.db` を開けます。
+GitHub 上のファイル:
+
+https://github.com/n0r1k09583/OuchiUketsuke/blob/main/docs/ouchi-uketsuke.db
+
+DB Browser for SQLite などで開けます。アプリ本体の常時公開はありません。評価はローカル起動です。
+
+実行時の正は `backend/data/ouchi-uketsuke.db` です（Git には含めません）。起動すると自動で作られます。
 
 ## ホテルと会社
 

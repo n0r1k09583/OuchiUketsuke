@@ -8,7 +8,7 @@
 #
 # 常時稼働では残さない。確認が終わったら terraform destroy する。
 # 入れないもの: NAT Gateway / ALB / RDS / CloudFront
-# （NAT・LB は課金しやすい。データは JSON なので RDS は使わない。本番 URL は作らない）
+# （NAT・LB は課金しやすい。データは SQLite の .db なので RDS は使わない。本番 URL は作らない）
 
 terraform {
   required_version = ">= 1.5.0"

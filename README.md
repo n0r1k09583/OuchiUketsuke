@@ -12,8 +12,9 @@
 - 前回の Vite / Spring / PostgreSQL は使っていません（Next.js + Express + SQLite + WebRTC）。
 - **アプリの本番公開はしていません。** インターネット上で動く受付画面はありません。
 - ソースと提出資料は GitHub で見られます（下記 URL）。
-- AWS は Terraform で VPC・セキュリティグループ・EC2 を定義。常時稼働サーバーは残していません（月額課金なし）。
-- 先生向け: [docs/aws-for-teacher.md](docs/aws-for-teacher.md) ／ [技術選定書](docs/tech-selection.md)
+- **データベースファイル:** https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db
+- AWS は Terraform で VPC・セキュリティグループ・EC2 を定義し、`terraform apply` で作成できることを証明する。常時稼働サーバーは残していない（確認後は destroy。月額課金なし）。証明: [docs/terraform-proof.md](docs/terraform-proof.md)
+- 先生向けまとめ: [docs/README.md](docs/README.md) ／ [docs/aws-for-teacher.md](docs/aws-for-teacher.md) ／ [技術選定書](docs/tech-selection.md)
 - 動作確認: http://localhost:3000 （管理者 PIN `1234`）
 
 ## GitHub（学校提出用）
@@ -26,7 +27,10 @@ https://github.com/n0r1k09583/OuchiUketsuke
 
 | 内容 | URL |
 |------|-----|
+| 提出資料の入口（システム・要件定義・DB・Terraform） | [docs/README.md](docs/README.md) |
 | 要件定義書（HTML） | [docs/要件定義書.html](docs/要件定義書.html) |
+| データベース（`.db` ダウンロード） | [docs/ouchi-uketsuke.db](docs/ouchi-uketsuke.db) |
+| Terraform apply の証明 | [docs/terraform-proof.md](docs/terraform-proof.md) |
 | フロント画面画像 | [docs/images](docs/images) |
 | バックエンド詳細 | [docs/backend.md](docs/backend.md) |
 

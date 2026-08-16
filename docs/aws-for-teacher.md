@@ -15,7 +15,7 @@
 |------|------|
 | 目的 | 学校提出用に、AWS を無料枠の範囲で扱う |
 | AWS CLI | 課題作業のためダウンロード・導入した |
-| Terraform | `infra/terraform/` に VPC・セキュリティグループ・EC2 を定義した |
+| Terraform | `infra/terraform/` に VPC・セキュリティグループ・EC2 を定義した。`terraform apply` で作成し、確認後は `destroy` する。手順は [terraform-proof.md](./terraform-proof.md) |
 | 常時稼働サーバー | **残していない**（確認後は destroy。月額費用を出さないため） |
 | 一般公開 | ソースは GitHub で閲覧可。AWS の常時稼働アプリは残していない |
 
@@ -31,6 +31,14 @@ GitHub: https://github.com/n0r1k09583/OuchiUketsuke/tree/main/infra/terraform
 
 NAT Gateway・ロードバランサー・RDS・CloudFront は使いません（高くなりやすい／本アプリは SQLite の `.db` 保存）。  
 確認が終わったクラウド資源は残しません。
+
+## データベースファイル
+
+提出用の SQLite です。DB Browser for SQLite などで開けます。
+
+https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db
+
+説明: [database.md](./database.md)
 
 ## 先生が動作を見るとき（こちらを使ってください）
 

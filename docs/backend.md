@@ -32,6 +32,8 @@ backend/
   package.json
 ```
 
+提出用のスナップショットは [docs/ouchi-uketsuke.db](./ouchi-uketsuke.db) です。ダウンロード: https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db
+
 前回課題の Java + Spring Boot + Gradle + PostgreSQL は使っていません。
 
 ## 3. 保存するデータ

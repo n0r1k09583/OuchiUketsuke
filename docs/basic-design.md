@@ -159,7 +159,7 @@ STUN は公開サーバー（Google STUN）を使う。TURN は課題範囲外�
 
 - 管理者画面はPIN照合後のみ操作する
 - `.env` は Git に含めない
-- `backend/data/ouchi-uketsuke.db` は実行時データのため Git に含めない
+- `backend/data/ouchi-uketsuke.db` は実行時データのため Git に含めない（先生確認用のスナップショットは `docs/ouchi-uketsuke.db`）
 - AWS は Terraform で VPC・セキュリティグループ・EC2 を定義する（`infra/terraform/`）。常時稼働では残さない。apply したら destroy する
 
 本番運用する場合は、サーバー側セッション、PINのハッシュ化、通話ロールの検証を追加する。

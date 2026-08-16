@@ -49,7 +49,7 @@ yarn-error.log*
 /data/store.json
 /backend/data/store.json
 /backend/data/*.db
-/docs/ouchi-uketsuke.db
+# docs/ouchi-uketsuke.db は先生確認用の提出スナップショット（Git に含める）
 
 # terraform
 infra/terraform/.terraform/

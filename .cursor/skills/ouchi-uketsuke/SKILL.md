@@ -34,7 +34,7 @@ description: >-
 フロントとバックは **別フォルダの別プロジェクト**。画面は `frontend/`、API は `backend/`。混ぜない。
 
 - フロント: `frontend/` Next.js ポート 3000。`/api/*` は `BACKEND_URL`（既定 `http://localhost:8080`）へ rewrites。
-- バック: `backend/src/server.ts` ポート 8080。保存は `backend/data/ouchi-uketsuke.db`（SQLite。Git に含めない）。
+- バック: `backend/src/server.ts` ポート 8080。実行時保存は `backend/data/ouchi-uketsuke.db`。先生確認用は `docs/ouchi-uketsuke.db`。
 - フロントに API Route を戻さない。データはバックエンドだけが書く。
 - 起動: `npm install --prefix frontend` / `npm install --prefix backend` / それぞれ `npm run dev`（またはルートの `npm run dev`）
 
@@ -96,9 +96,9 @@ description: >-
 途中から続けるときは、この状態を崩さない。
 
 - ブランチ: `school-submission`。提出の正は GitHub `main`（先生はリポジトリ URL を見る）。
-- フロント `frontend/`、バック `backend/`、インフラ `infra/terraform/`（VPC / SG / EC2 定義。apply して残さない）。
-- 保存: `backend/data/ouchi-uketsuke.db`（Git に入れない。実行時に作る）。
+- フロント `frontend/`、バック `backend/`。
+- 保存: 実行時 `backend/data/ouchi-uketsuke.db`（Git に入れない）。先生確認用 `docs/ouchi-uketsuke.db`（https://github.com/n0r1k09583/OuchiUketsuke/raw/main/docs/ouchi-uketsuke.db）。
 - 受付機 `/reception` と管理者 `/admin`・スケジュール `/admin/schedule` は別画面・同じ API。到着は通知とスケジュールに反映する。
-- 無料枠: 本番 URL なし。NAT / RDS / ALB / CloudFront なし。
+- インフラ `infra/terraform/`（VPC / SG / EC2。apply したら destroy。証明は `docs/terraform-proof.md`）。無料枠: 本番 URL なし。NAT / RDS / ALB / CloudFront なし。
 - 先生へ渡す URL: https://github.com/n0r1k09583/OuchiUketsuke
 

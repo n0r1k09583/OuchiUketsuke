@@ -71,7 +71,7 @@ HTML を PDF にするときは、ファイルをブラウザで開き **Ctrl+P 
 | 基本設計書 | 画面・データ・API・通話方針 | [docs/basic-design.md](./basic-design.md) |
 | 実装 | Express 本体 | [backend/src/server.ts](../backend/src/server.ts) |
 
-バックエンドは Express :8080。画面は Next.js が `/api/*` を転送します。保存は `backend/data/store.json`（Git には含めません）。
+バックエンドは Express :8080。画面は Next.js が `/api/*` を転送します。保存は `backend/data/ouchi-uketsuke.db`（SQLite。Git には含めません）。
 
 ---
 

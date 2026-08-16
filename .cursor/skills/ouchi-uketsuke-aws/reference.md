@@ -13,7 +13,7 @@
 |------|------|
 | リージョン | ap-northeast-1（東京） |
 | 計算 | t3.micro（`ec2.tf`）。一度確認したら destroy |
-| 保存 | RDS は使わない。JSON ファイル |
+| 保存 | RDS は使わない。SQLite の `.db` ファイル |
 | ネットワーク | VPC + 公開サブネット + IGW（`network.tf`）。NAT Gateway なし |
 | 防御 | セキュリティグループは自分の IP のみ（`security_groups.tf`） |
 

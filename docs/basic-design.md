@@ -11,14 +11,14 @@
 |----------|----------|------------------|----------|
 | フロント | Next.js App Router + TypeScript | Vite + React | 受付画面と API 転送を Next で扱う。Vite SPA にしない |
 | バック | Node.js + Express | Java + Spring Boot + Gradle | JVM に依存せず API を自前で置く |
-| 保存 | JSON ファイル | PostgreSQL | RDB を使わず問い合わせと予定を残す |
+| 保存 | SQLite（`.db` ファイル） | PostgreSQL | サーバー常時稼働の RDS を使わず、添付できる DB ファイルに予定と問い合わせを残す |
 | 通話 | WebRTC | — | お問い合わせをその場で話す |
 | インフラ | Terraform（VPC / SG / EC2）。評価はローカル。常時稼働なし | — | 月額課金を出さない。定義は残し、サーバーは残さない |
 
 フロントエンドとバックエンドは **別フォルダの別プロジェクト** である。画面の修正は `frontend/`、API の修正は `backend/` で行う。
 
 - フロントエンド: `frontend/`（Next.js、ポート 3000、画面のみ）
-- バックエンド: `backend/`（Express、ポート 8080、API と JSON）
+- バックエンド: `backend/`（Express、ポート 8080、API と SQLite）
 - Next.js の rewrites で、ブラウザは今までどおり `/api/...` にアクセスする
 
 ## 2. システム構成図
@@ -28,7 +28,7 @@ flowchart LR
     Kiosk["入口タブレット"] --> Next["frontend/\nNext.js :3000\n画面のみ"]
     Home["自宅PC"] --> Next
     Next -- "/api/* を転送" --> API["backend/\nExpress :8080\nAPIのみ"]
-    API --> Store[("store.json")]
+    API --> Store[("ouchi-uketsuke.db")]
     Kiosk -. WebRTC .-> Home
 ```
 
@@ -159,7 +159,7 @@ STUN は公開サーバー（Google STUN）を使う。TURN は課題範囲外�
 
 - 管理者画面はPIN照合後のみ操作する
 - `.env` は Git に含めない
-- `backend/data/store.json` は実行時データのため Git に含めない
+- `backend/data/ouchi-uketsuke.db` は実行時データのため Git に含めない
 - AWS は Terraform で VPC・セキュリティグループ・EC2 を定義する（`infra/terraform/`）。常時稼働では残さない。apply したら destroy する
 
 本番運用する場合は、サーバー側セッション、PINのハッシュ化、通話ロールの検証を追加する。
@@ -183,7 +183,7 @@ flowchart LR
 | サブネット | 公開1つ（ap-northeast-1a） |
 | セキュリティグループ | 自分の IP のみ |
 | EC2 | t3.micro / Amazon Linux 2023 |
-| 保存 | RDS は使わない（JSON） |
+| 保存 | RDS は使わない（SQLite の `.db`） |
 | 公開 | CloudFront / ALB なし |
 
 定義ファイル: `infra/terraform/`（`network.tf` / `security_groups.tf` / `ec2.tf` ほか）。

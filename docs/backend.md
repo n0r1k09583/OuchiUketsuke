@@ -11,7 +11,7 @@
 ```
 ブラウザ  →  frontend/  Next.js :3000（画面）
                 └── /api/* を転送 →  backend/  Express :8080
-                                              └── backend/data/store.json
+                                              └── backend/data/ouchi-uketsuke.db
 ```
 
 - 起動: `cd backend` → `npm install` → `npm run dev`
@@ -24,11 +24,11 @@
 backend/
   src/
     server.ts    API（Express）
-    store.ts     JSON の読み書き、サンプル予定の初期化
+    store.ts     SQLite（.db）の読み書き、サンプル予定の初期化
     types.ts     型
     format.ts    日付・番号・氏名の正規化
   data/
-    store.json   実行時データ（Git に含めない）
+    ouchi-uketsuke.db   実行時データ（Git に含めない）
   package.json
 ```
 
@@ -36,13 +36,14 @@ backend/
 
 ## 3. 保存するデータ
 
-`store.json` は次の4つです。
+`ouchi-uketsuke.db`（SQLite）は次の表です。
 
-| キー | 内容 |
+| 表 | 内容 |
 |------|------|
 | settings | 施設名、ホテル／会社、PIN、あいさつ |
 | appointments | 来客予定（氏名、日時、受付番号、到着／退出時刻、状態） |
-| calls | 通話（着信、チャット、WebRTC の合図） |
+| calls | 通話（着信、WebRTC の合図） |
+| call_messages | チャット本文 |
 | notifications | 到着・帰宅・着信の通知 |
 
 ### 来客予定の状態

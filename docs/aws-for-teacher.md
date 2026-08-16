@@ -5,7 +5,7 @@
 
 提出用 GitHub: https://github.com/n0r1k09583/OuchiUketsuke
 
-前回課題（Vite / Java Spring Boot Gradle / PostgreSQL）とは **違う技術**（Next.js / Express / JSON / WebRTC）です。選定の証明は [tech-selection.md](./tech-selection.md) を見てください。
+前回課題（Vite / Java Spring Boot Gradle / PostgreSQL）とは **違う技術**（Next.js / Express / SQLite / WebRTC）です。選定の証明は [tech-selection.md](./tech-selection.md) を見てください。
 
 ## AWS を使ったこと（無料枠・学校提出用）
 
@@ -29,7 +29,7 @@ GitHub: https://github.com/n0r1k09583/OuchiUketsuke/tree/main/infra/terraform
 | `security_groups.tf` | SSH とアプリポートを自分の IP だけ許可 |
 | `ec2.tf` | 無料枠の t3.micro |
 
-NAT Gateway・ロードバランサー・RDS・CloudFront は使いません（高くなりやすい／本アプリは JSON 保存）。  
+NAT Gateway・ロードバランサー・RDS・CloudFront は使いません（高くなりやすい／本アプリは SQLite の `.db` 保存）。  
 確認が終わったクラウド資源は残しません。
 
 ## 先生が動作を見るとき（こちらを使ってください）

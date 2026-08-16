@@ -19,6 +19,7 @@
 /frontend/.next/
 /frontend/out/
 /frontend/next-env.d.ts
+/frontend/frontend/
 
 # production
 /build
@@ -47,6 +48,8 @@ yarn-error.log*
 # runtime data
 /data/store.json
 /backend/data/store.json
+/backend/data/*.db
+/docs/ouchi-uketsuke.db
 
 # terraform
 infra/terraform/.terraform/

@@ -22,7 +22,7 @@ AI を補助として使いながらも、**技術の選定と構築は自分で
 |----|------------------------|----------------|------------|
 | フロントの作り方 | React + TypeScript + **Vite** + Tailwind | **Next.js**（App Router）+ TypeScript | SPA の Vite ではなく、App Router と API 転送（rewrites） |
 | バックエンド | **Java + Spring Boot + Gradle** | **Node.js + Express** | JVM / Gradle ではない。同じ言語で API サーバーを自前構築 |
-| データベース | **PostgreSQL** | **JSON ファイル** | RDB を使わず、ファイル保存で予定と問い合わせを残す |
+| データベース | **PostgreSQL** | **SQLite（`.db` ファイル）** | 常時稼働の RDS / PostgreSQL ではなく、メール添付できる DB ファイルに予定と問い合わせを残す |
 | 新しい要素 | （なし／別課題） | **WebRTC**（ビデオ＋チャット） | お問い合わせをその場で直接話す |
 
 前回と同じものに頼らないため、Spring も PostgreSQL も Vite も使っていません。
@@ -38,7 +38,7 @@ AI に「何を使うか全部決めて」とはせず、条件を自分で置�
 2. **お問い合わせが途切れない**  
    映像がダメでもチャットが残るように、通話の合図だけサーバー、映像は端末同士（WebRTC）。
 3. **前回と重ねない**  
-   Vite の代わりに Next.js。Spring/Gradle/PostgreSQL の代わりに Express と JSON。
+   Vite の代わりに Next.js。Spring/Gradle/PostgreSQL の代わりに Express と SQLite。
 4. **月額費用を出さない**  
    AWS は Terraform で VPC・セキュリティグループ・EC2 を定義する。常時サーバーは置かない。評価はローカル。
 

@@ -6,7 +6,7 @@
 詳細は [docs/aws-for-teacher.md](../../docs/aws-for-teacher.md) を先に読んでください。
 
 ファイルの分け方は学校の例（RecipeManager）に合わせています（`network.tf` / `security_groups.tf` / `ec2.tf`）。  
-RDS・CloudFront・NAT Gateway は、本アプリでは使いません（保存は JSON、評価はローカル、月額課金を出さないため）。
+RDS・CloudFront・NAT Gateway は、本アプリでは使いません（保存は SQLite の `.db`、評価はローカル、月額課金を出さないため）。
 
 ## このフォルダのファイル
 
@@ -24,7 +24,7 @@ RDS・CloudFront・NAT Gateway は、本アプリでは使いません（保存�
 ## 入れていないもの（高い・今回のアプリに不要）
 
 - NAT Gateway、ロードバランサー、CloudFront
-- RDS（保存は JSON ファイル）
+- RDS（保存は SQLite の `.db`）
 - Elastic IP（作りっぱなしになりやすい）
 
 ## 評価用の起動（課金なし）

@@ -96,7 +96,7 @@ export function statusLabel(status: string, facilityType?: string): string {
     "in-call": "通話中",
     completed: "対応済",
     cancelled: "取消",
-    "no-show": "不来館",
+    "no-show": "不来訪",
     ringing: "着信中",
     active: "通話中",
     ended: "終了",

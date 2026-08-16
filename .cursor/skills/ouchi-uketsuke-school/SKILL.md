@@ -16,7 +16,7 @@ description: >-
 - 証明資料は `docs/tech-selection.md`。
 - GitHub は学校提出のため **public**（先生が URL を開いて確認できる）。
 - アプリ本体の本番 URL（常時動く受付画面）は作らない。AWS 常時稼働は残さない。
-- `store.json` は Git に含めない。force push しない。git config は変えない。
+- `store.json` / `ouchi-uketsuke.db` は Git に含めない。force push しない。git config は変えない。
 
 ## 提出フォームに入れる URL（これ以外はエラーになる）
 
@@ -51,6 +51,7 @@ description: >-
 | 要件定義書（Markdown） | `docs/requirements.md` | — |
 | 基本設計書 | `docs/basic-design.md` | — |
 | 技術選定書 | `docs/tech-selection.md` | — |
+| DB説明 | `docs/database.md` | — |
 
 ## コマンド（push）
 
@@ -62,3 +63,14 @@ git push -u origin HEAD
 ```
 
 想定アカウント: `n0r1k09583`。提出用リポジトリは public。AWS の本番公開はしない。
+
+## 再開用（ここまでの確定）
+
+途中から続けるときは、この状態を正とする。Skill を上書きしたうえで、未コミットがあれば上のコマンドで push する。
+
+- 先生が見るのは GitHub `main`。作業ブランチは `school-submission`。push 後は `main` にも載せる（フォームはリポジトリ URL）。
+- フロント `frontend/`、バック `backend/`。保存は SQLite `backend/data/ouchi-uketsuke.db`（Git に入れない）。
+- Terraform は `infra/terraform/` に VPC / SG / EC2 の定義のみ。`terraform apply` しない。
+- ホテル／会社は `facilityType`。試す番号の日付は `alignDemoDates`。
+- スケジュール画面は確認済みのため大きく変えない。
+
